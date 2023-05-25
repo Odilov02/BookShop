@@ -1,11 +1,6 @@
 ﻿using Application.Abstraction;
 using Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
@@ -18,19 +13,25 @@ namespace Infrastructure.Services
             _db = db;
         }
 
-        public Task<T> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _db.Set<T>().AddAsync(entity);
+            await _db.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<bool> DeleteAsync(Guid Id)
+        public async Task<bool> DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _db.Set<T>().Remove(entity);
+          await  _db.SaveChangesAsync();
+            return true;
         }
 
-        public Task<ICollection<T>> Get(Expression<Func<T, bool>> expression)
+        public async Task<ICollection<T>> Get(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            ICollection<T> entities = _db.Set<T>().Where(expression).ToList();
+            await _db.SaveChangesAsync();
+            return entities;
         }
 
         public Task<bool> UpdateAsync(T entity)

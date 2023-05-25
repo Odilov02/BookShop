@@ -12,7 +12,7 @@ namespace Application.Interfaces
         Task<ICollection<T>> Get(Expression<Func<T, bool>> expression);
         Task<T> CreateAsync(T entity);
         Task<bool> UpdateAsync(T entity);
-        Task<bool> DeleteAsync(Guid Id);
+        Task<bool> DeleteAsync(T entity);
 
     }
 }
