@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Abstraction;
+using Domain.Entities;
+using Infrastructure.Services;
 
 namespace Application.Interfaces.ServiceInterfaces
 {
-    public class Commentary
+    public class CommentarySerivce : Repository<Commentary>, ICommentaryService
     {
+        private readonly IApplicatonDbcontext _db;
+
+        public CommentarySerivce(IApplicatonDbcontext db) : base(db)
+        {
+            _db = db;
+        }
     }
 }

@@ -10,6 +10,6 @@ namespace Domain.Entities;
 public class Category : BaseAuditableEntity
 {
     public string Name { get; set; } = "";
-    public ICollection<User>? Users { get; set; }
+    public ICollection< Book>? Books { get; set; }
 }
 
