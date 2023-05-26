@@ -1,5 +1,6 @@
-﻿namespace Application.DTOs.Author;
+﻿namespace Application.DTOs.Authors;
 
-public class AuthorUpdateDTO
+public class AuthorUpdateDTO:AuthorkBaseDTO
 {
+  
 }

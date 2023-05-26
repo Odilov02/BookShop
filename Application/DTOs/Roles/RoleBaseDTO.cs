@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.Role;
+namespace Application.DTOs.Roles;
 
 public class RoleBaseDTO
 {
+    public Guid Id { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Abstraction;
 using Application.Interfaces.ServiceInterfaces;
 using Infrastructure.DataAcces;
+using Infrastructure.DataAcces.Interceptor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,8 @@ namespace Infrastructure
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+
             return services;
         }
     }

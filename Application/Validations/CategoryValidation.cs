@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities;
+using FluentValidation;
 
 namespace Application.Validations
 {
-    public class CategoryValidation
+    public class CategoryValidation : AbstractValidator<Category>
     {
+        public CategoryValidation()
+        {
+            RuleFor(c => c.Name).NotEmpty().NotEmpty().MaximumLength(30).MinimumLength(3);
+
+        }
     }
 }

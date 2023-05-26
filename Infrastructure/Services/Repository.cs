@@ -13,7 +13,15 @@ namespace Infrastructure.Services
             _db = db;
         }
 
-        public async Task<T> CreateAsync(T entity)
+        public async Task<ICollection<T>> AddRangeAsync(ICollection<T> entities)
+        {
+
+            await _db.Set<T>().AddRangeAsync(entities);
+            await _db.SaveChangesAsync();
+            return entities;
+        }
+
+        public async Task<T> AddAsync(T entity)
         {
             await _db.Set<T>().AddAsync(entity);
             await _db.SaveChangesAsync();
@@ -23,17 +31,22 @@ namespace Infrastructure.Services
         public async Task<bool> DeleteAsync(T entity)
         {
             _db.Set<T>().Remove(entity);
-          await  _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return true;
         }
 
-        public async Task<ICollection<T>> Get(Expression<Func<T, bool>> expression)
+        public async Task<List<T>> GetAll(Expression<Func<T, bool>> expression)
         {
-            ICollection<T> entities = _db.Set<T>().Where(expression).ToList();
+            List<T> entities = _db.Set<T>().Where(expression).ToList();
             await _db.SaveChangesAsync();
             return entities;
         }
 
+        public async Task<T> Get(Guid Id)
+        {
+            T? result = await _db.Set<T>().FindAsync(Id)!;
+            return result!;
+        }
         public Task<bool> UpdateAsync(T entity)
         {
             throw new NotImplementedException();

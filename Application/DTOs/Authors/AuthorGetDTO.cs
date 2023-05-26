@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-namespace Application.DTOs.Author;
+namespace Application.DTOs.Authors;
 
 
 public class AuthorGetDTO
@@ -8,5 +8,5 @@ public class AuthorGetDTO
 
     public string Description { get; set; } = "";
 
-   // public ICollection<Book>? Books { get; set; }
+    public ICollection<Book>? Books { get; set; }
 }

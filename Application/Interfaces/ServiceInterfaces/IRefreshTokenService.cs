@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Validations
+namespace Application.Interfaces.ServiceInterfaces
 {
-    public class Commentary
+    internal interface IRefreshToken
     {
     }
 }

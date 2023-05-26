@@ -1,6 +1,7 @@
-﻿namespace Application.DTOs.Author;
+﻿namespace Application.DTOs.Authors;
 
-public class AuthorkBaseDTO
+public abstract class AuthorkBaseDTO
 {
     public Guid Id { get; set; }
+
 }

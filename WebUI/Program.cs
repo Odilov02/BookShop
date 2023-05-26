@@ -1,5 +1,5 @@
-using Domain;
 using Application;
+using Domain;
 using Infrastructure;
 using WebUI.Middlewares;
 
@@ -12,10 +12,10 @@ namespace WebUI
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddUIServices(builder.Configuration);
-            builder.Services.AddDomainServices(builder.Configuration);
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddInfrastructureServices(builder.Configuration);
 
+            builder.Services.AddDomainServices(builder.Configuration);
 
             WebApplication app = builder.Build();
             app.UseExeptionHandling();
@@ -28,8 +28,8 @@ namespace WebUI
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

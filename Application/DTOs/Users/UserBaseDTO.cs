@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.User;
+namespace Application.DTOs.Users;
 
 public class UserBaseDTO
 {
+    public Guid Id { get; set; }
 }
