@@ -10,8 +10,8 @@ namespace Application.DTOs.Users;
 
 public class UserCreateDTO
 {
-     public string FullName { get; set; } = "";
-    public string PhoneNumber { get; set; } = "";
-    public string Password { get; set; } = "";
+     public string FullName { get; set; } 
+    public string PhoneNumber { get; set; } 
+    public string Password { get; set; }
 
 }

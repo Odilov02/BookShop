@@ -5,11 +5,11 @@ namespace WebUI.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public string Id()
     {
-        _httpContextAccessor = httpContextAccessor;
+        var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+        var UserId = claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase))?.Value;
+        return UserId;
     }
-    public string UserId => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 }
+

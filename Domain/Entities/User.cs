@@ -3,7 +3,7 @@ using Domain.Entities.IdentityEntities;
 
 namespace Domain.Entities;
 
-public class User : BaseAuditableEntity
+public class User : BaseEntity
 {
     public string FullName { get; set; } = "";
     public string PhoneNumber { get; set; } = "";

@@ -11,5 +11,5 @@ namespace Application.DTOs.Roles;
 public class RoleGetDTO
 {
     public string? RoleName { get; set; } = "";
-    public ICollection<Permission>? permissions { get; set; }
+    public ICollection<Guid>? permissionsId { get; set; }
 }

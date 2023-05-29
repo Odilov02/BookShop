@@ -10,8 +10,8 @@ namespace Infrastructure.DataAcces
     {
         private AuditableEntitySaveChangesInterceptor _interceptor;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options,AuditableEntitySaveChangesInterceptor interceptor)
-            :base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options, AuditableEntitySaveChangesInterceptor interceptor)
+            : base(options)
         {
             _interceptor = interceptor;
         }

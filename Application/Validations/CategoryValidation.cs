@@ -7,7 +7,7 @@ namespace Application.Validations
     {
         public CategoryValidation()
         {
-            RuleFor(c => c.Name).NotEmpty().NotEmpty().MaximumLength(30).MinimumLength(3);
+            RuleFor(c => c.Name).NotEmpty().NotEmpty().MaximumLength(30).MinimumLength(3).WithMessage("Name is not valid");
 
         }
     }

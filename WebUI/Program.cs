@@ -9,13 +9,17 @@ namespace WebUI
     {
         public static void Main(string[] args)
         {
+            try
+            {
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddUIServices(builder.Configuration);
-            builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices(builder.Configuration);
 
             builder.Services.AddDomainServices(builder.Configuration);
+            builder.Services.AddUIServices(builder.Configuration);
 
             WebApplication app = builder.Build();
             app.UseExeptionHandling();
@@ -34,6 +38,13 @@ namespace WebUI
             app.MapControllers();
 
             app.Run();
+
+            }
+            catch (Exception e)
+            {
+
+                
+            }
         }
     }
 }

@@ -16,39 +16,66 @@ public class MapProfile : Profile
 {
     public MapProfile()
     {
-        //Author
-        CreateMap<AuthorCreateDTO, Author>().ReverseMap();
-        CreateMap<AuthorUpdateDTO, Author>().ReverseMap();
-        CreateMap<AuthorGetDTO, Author>().ReverseMap();
+        AuthorMapping();
 
-        //Book Mapping
-        CreateMap<Book, Book>().ReverseMap();
-        CreateMap<BookUpdateDTO, Book>().ReverseMap();
-        CreateMap<BookGetDTO, Book>().ReverseMap();
+        BookMapping();
 
-        //Commentary
-        CreateMap<CommentaryCreateDTO, Commentary>().ReverseMap();
-        CreateMap<CommentaryUpdateDTO, Commentary>().ReverseMap();
-        CreateMap<CommentaryGetDTO, Commentary>().ReverseMap();
-
-        //Role
-        CreateMap<RoleCreateDTO, Role>().ReverseMap();
-        CreateMap<RoleUpdateDTO, Role>().ReverseMap();
-        CreateMap<RoleGetDTO, Role>().ReverseMap();
-
-        //Category
-        CreateMap<CategoryCreateDTO, Category>().ReverseMap();
-        CreateMap<CategoryUpdateDTO, Category>().ReverseMap();
-        CreateMap<CategoryGetDTO, Category>().ReverseMap();
-
-        //user
-        CreateMap<UserCreateDTO, User>().ReverseMap();
-        CreateMap<UserUpdateDTO, User>().ReverseMap();
-        CreateMap<UserGetDTO, User>().ReverseMap();
-
-        //Permission
-        CreateMap<PermissionGetDTO, Permission>().ReverseMap();
+        CommentaryMappping();
 
 
+        RoleMapping();
+
+        CategoryMapping();
+
+        UserMapping();
+
+        PermissionMapping();
+
+        void AuthorMapping()
+        {
+            CreateMap<AuthorCreateDTO, Author>().ReverseMap();
+            CreateMap<AuthorUpdateDTO, Author>().ReverseMap();
+            CreateMap<AuthorGetDTO, Author>().ReverseMap();
+        }
+
+        void BookMapping()
+        {
+            CreateMap<Book, Book>().ReverseMap();
+            CreateMap<BookUpdateDTO, Book>().ReverseMap();
+            CreateMap<BookGetDTO, Book>().ReverseMap();
+        }
+
+        void CommentaryMappping()
+        {
+            CreateMap<CommentaryCreateDTO, Commentary>().ReverseMap();
+            CreateMap<CommentaryUpdateDTO, Commentary>().ReverseMap();
+            CreateMap<CommentaryGetDTO, Commentary>().ReverseMap();
+        }
+
+        void RoleMapping()
+        {
+            CreateMap<RoleCreateDTO, Role>().ReverseMap();
+            CreateMap<RoleUpdateDTO, Role>().ReverseMap();
+            CreateMap<RoleGetDTO, Role>().ReverseMap();
+        }
+
+        void CategoryMapping()
+        {
+            CreateMap<CategoryCreateDTO, Category>().ReverseMap();
+            CreateMap<CategoryUpdateDTO, Category>().ReverseMap();
+            CreateMap<CategoryGetDTO, Category>().ReverseMap();
+        }
+
+        void UserMapping()
+        {
+            CreateMap<UserCreateDTO, User>().ReverseMap();
+            CreateMap<UserUpdateDTO, User>().ReverseMap();
+            CreateMap<UserGetDTO, User>().ReverseMap();
+        }
+
+        void PermissionMapping()
+        {
+            CreateMap<PermissionGetDTO, Permission>().ReverseMap();
+        }
     }
 }

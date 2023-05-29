@@ -12,9 +12,9 @@ namespace Application.Validations
     {
         public UserValidation()
         {
-            RuleFor(x => x.Password).NotNull().NotEmpty().NotEmpty().MinimumLength(5).MinimumLength(10);
-            RuleFor(x => x.PhoneNumber).NotEmpty().NotNull().Matches(@"^\+998\d{9}$");
-            RuleFor(x => x.FullName).NotNull().NotEmpty();
+            RuleFor(x => x.Password).NotNull().NotEmpty().NotEmpty().Matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$").WithMessage("Password  is not valid");
+            RuleFor(x => x.PhoneNumber).NotEmpty().NotNull().Matches(@"^\+998\d{9}$").WithMessage("PhoneNumber  is not valid");
+            RuleFor(x => x.FullName).NotNull().NotEmpty().WithMessage("FullName  is not valid");
         }
     }
 }

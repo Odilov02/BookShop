@@ -2,6 +2,7 @@
 using Application.Interfaces.ServiceInterfaces;
 using Infrastructure.DataAcces;
 using Infrastructure.DataAcces.Interceptor;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,11 +18,14 @@ namespace Infrastructure
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<ICommentaryService, CommentarySerivce>();
+            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IRefreshTokenService,RefreshTokenService>();
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
-            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            services.AddScoped<IUserService, UserSevice>();
+           services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
             return services;
         }

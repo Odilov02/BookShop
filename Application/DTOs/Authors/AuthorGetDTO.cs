@@ -8,5 +8,5 @@ public class AuthorGetDTO
 
     public string Description { get; set; } = "";
 
-    public ICollection<Book>? Books { get; set; }
+    public ICollection<Guid>? BooksId { get; set; }
 }

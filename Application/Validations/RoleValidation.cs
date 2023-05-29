@@ -12,7 +12,7 @@ namespace Application.Validations
     {
         public RoleValidation()
         {
-            RuleFor(x => x.RoleName).NotEmpty().NotNull().MaximumLength(3).MaximumLength(30);
+            RuleFor(x => x.RoleName).NotEmpty().NotNull().MaximumLength(3).MaximumLength(30).WithMessage("RoleName is not valid");
         }
     }
 }

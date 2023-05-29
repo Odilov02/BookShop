@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Abstraction;
+using Application.Interfaces.ServiceInterfaces;
+using Domain.Entities.Tokens;
 
 namespace Infrastructure.Services
 {
-    internal class RefreshTokenService
+    public class RefreshTokenService : Repository<RefreshToken>, IRefreshTokenService
     {
+        IApplicatonDbcontext _db;
+        public RefreshTokenService(IApplicatonDbcontext db) : base(db)
+        {
+            _db = db;
+        }
     }
 }

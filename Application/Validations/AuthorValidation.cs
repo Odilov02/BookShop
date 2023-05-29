@@ -12,8 +12,8 @@ namespace Application.Validations
     {
         public AuthorValidation()
         {
-            RuleFor(x => x.FullName).NotEmpty().NotNull().MaximumLength(30).MinimumLength(5);
-            RuleFor(x=>x.Description).NotEmpty().NotNull().MinimumLength(2).MaximumLength(100);
+            RuleFor(x => x.FullName).NotEmpty().NotNull().MaximumLength(30).MinimumLength(5).WithMessage("FullName is not valid");
+            RuleFor(x=>x.Description).NotEmpty().NotNull().MinimumLength(2).MaximumLength(100).WithMessage("Description is not valid");
         }
     }
 }

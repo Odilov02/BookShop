@@ -20,7 +20,7 @@ namespace WebUI.Middlewares
             {
 
                 context.Response.StatusCode = 200;
-                context.Response.Body.Write(Encoding.UTF8.GetBytes(e.Message));
+             await   context.Response.WriteAsync(e!.ToString()!);
             }
         }
     }
