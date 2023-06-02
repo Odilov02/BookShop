@@ -10,5 +10,5 @@ namespace Application.DTOs.Categories;
 public class CategoryGetDTO
 {
     public string Name { get; set; } = "";
-    public ICollection<Guid>? BooksId { get; set; }
+    public ICollection<Guid>? BookIds { get; set; }
 }

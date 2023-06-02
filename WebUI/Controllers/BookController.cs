@@ -6,9 +6,7 @@ namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    
-    public class BookController : ApiControllerBase<Book>
+    public class BookController : ControllerBase
     {
 
     }

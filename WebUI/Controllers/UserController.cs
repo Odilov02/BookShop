@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Users;
-using Application.ResponseModel;
+using Application.ResponseCoreModel;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using FluentValidation;
-
 namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
@@ -40,7 +39,7 @@ namespace WebUI.Controllers
         [Route("CreateUser")]
       //  [ModelValidationAttribute]
       //  [AllowAnonymous]
-        public async Task<ActionResult<Response<UserCreateDTO>>> CreateUser([FromBody] UserCreateDTO userDto)
+        public async Task<ActionResult<ResponseCore<UserCreateDTO>>> CreateUser([FromBody] UserCreateDTO userDto)
         {
             userDto.Password = userDto.Password.stringHash()!;
             User user = _mapper.Map<User>(userDto);
@@ -48,31 +47,31 @@ namespace WebUI.Controllers
 
             if (!validationResult.IsValid)
             {
-                return BadRequest(new Response<UserCreateDTO>(false, validationResult.Errors));
+                return BadRequest(new ResponseCore<UserCreateDTO>(false, validationResult.Errors));
             }
             User resultUser = await _userService.AddAsync(user);
             UserCreateDTO result = _mapper.Map<UserCreateDTO>(resultUser);
-            return Ok(new Response<UserCreateDTO>() { IsSuccess = true, Result = result });
+            return Ok(new ResponseCore<UserCreateDTO>() { IsSuccess = true, Result = result });
         }
 
 
         [HttpPost("[action]")]
         [ModelValidationAttribute]
         [AllowAnonymous]
-        public async Task<ActionResult<Response<Token>>> LoginUser([FromBody] UserCredential userCredential)
+        public async Task<ActionResult<ResponseCore<Token>>> LoginUser([FromBody] UserCredential userCredential)
         {
             userCredential.Password = userCredential.Password.stringHash()!;
             User? user = (await _userService.GetAll(x => true)).FirstOrDefault(x=>x.Password == userCredential.Password);
             if (user==null)
             {
-                return BadRequest(new Response<UserCreateDTO>(false, "User not found"));
+                return BadRequest(new ResponseCore<UserCreateDTO>(false, "User not found"));
             }
             Token token = new()
             {
                 AccessToken = await _tokenService.CreateAccesToken(user!),
                 RefreshToken = await _tokenService.CreateRefreshAccesToken(user!)
             };
-            return Ok(new Response<Token>() { IsSuccess = true, Result = token });
+            return Ok(new ResponseCore<Token>() { IsSuccess = true, Result = token });
         }
     }
 }

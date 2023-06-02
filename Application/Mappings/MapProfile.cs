@@ -29,9 +29,9 @@ public class MapProfile : Profile
 
         CategoryMapping();
 
-        UserMapping();
 
         PermissionMapping();
+        UserMapping();
     }
     void AuthorMapping()
     {
@@ -84,8 +84,8 @@ public class MapProfile : Profile
         CreateMap<UserUpdateDTO, User>().ForMember(dest => dest.Roles!.Select(x => x.Id), opt => opt.MapFrom(x => x.RolesId));
         CreateMap<User, UserUpdateDTO>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(x=>x.Roles!.Select(x => x.Id)));
         
-        CreateMap<UserGetDTO, User>().ForMember(dest => dest.Roles!.Select(x => x.Id), opt => opt.MapFrom(x => x.RolesId));
-        CreateMap<User, UserGetDTO>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(x=>x.Roles!.Select(x => x.Id)));
+        CreateMap<UserGetDTO, User>().ForMember(dest => dest.Roles, opt => opt.MapFrom(x => x.RoleIds.Select(id=>new Role() { Id=id})));
+        CreateMap<User, UserGetDTO>().ForMember(dest => dest.RoleIds, opt => opt.MapFrom(x=>x.Roles!.Select(x => x.Id)));
     }
 
     void PermissionMapping()

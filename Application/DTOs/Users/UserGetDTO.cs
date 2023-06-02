@@ -13,6 +13,6 @@ public class UserGetDTO
     public string FullName { get; set; } = "";
     public string PhoneNumber { get; set; } = "";
     public string Password { get; set; } = "";
-    public ICollection<Guid>? RolesId { get; set; }
+    public ICollection<Guid>? RoleIds { get; set; }
 
 }

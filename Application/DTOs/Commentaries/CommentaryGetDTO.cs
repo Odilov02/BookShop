@@ -10,6 +10,6 @@ namespace Application.DTOs.Commentaries;
 public class CommentaryGetDTO
 {
     public string Description { get; set; } = "";
-    public User? User { get; set; }
-    public Book? book { get; set; }
+    public Guid? UserId { get; set; }
+    public Guid? bookId { get; set; }
 }

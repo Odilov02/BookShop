@@ -2,7 +2,7 @@
 using Application.DTOs.users;
 using Application.DTOs.Users;
 using Application.Interfaces.ServiceInterfaces;
-using Application.ResponseModel;
+using Application.ResponseCoreModel;
 using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
@@ -39,12 +39,12 @@ namespace WebUI.Controllers
             }
             await _bookService.AddAsync(book);
             var result = _mapper.Map<BookCreateDTO>(book);
-            ResponseCore<BookCreateDTO> responseCore = new ResponseCore<BookCreateDTO>()
+            ResponseCore<BookCreateDTO> ResponseCoreCore = new ResponseCore<BookCreateDTO>()
             {
                 IsSuccess = true,
                 Result = result
             };
-            return Ok(responseCore);
+            return Ok(ResponseCoreCore);
         }
 
 
@@ -61,12 +61,12 @@ namespace WebUI.Controllers
             }
             await _bookService.UpdateAsync(book);
             var result = _mapper.Map<BookUpdateDTO>(book);
-            ResponseCore<BookUpdateDTO> responseCore = new ResponseCore<BookUpdateDTO>()
+            ResponseCore<BookUpdateDTO> ResponseCoreCore = new ResponseCore<BookUpdateDTO>()
             {
                 IsSuccess = true,
                 Result = result
             };
-            return Ok(responseCore);
+            return Ok(ResponseCoreCore);
         }
 
 

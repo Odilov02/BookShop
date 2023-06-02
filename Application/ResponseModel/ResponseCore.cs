@@ -1,4 +1,4 @@
-﻿namespace Application.ResponseModel;
+﻿namespace Application.ResponseCoreModel;
 
 public class ResponseCore<T>
 {

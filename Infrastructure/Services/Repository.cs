@@ -35,9 +35,9 @@ namespace Infrastructure.Services
             return true;
         }
 
-        public async Task<List<T>> GetAll(Expression<Func<T, bool>> expression)
+        public async Task<List<T>> GetAll()
         {
-            List<T> entities = _db.Set<T>().Where(expression).ToList();
+            List<T> entities = _db.Set<T>().ToList();
             await _db.SaveChangesAsync();
             return entities;
         }
@@ -47,9 +47,11 @@ namespace Infrastructure.Services
             T? result = await _db.Set<T>().FindAsync(Id)!;
             return result!;
         }
-        public Task<bool> UpdateAsync(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _db.Set<T>().Update(entity);
+            await _db.SaveChangesAsync();
+            return true;
         }
     }
 }

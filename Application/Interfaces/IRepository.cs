@@ -9,7 +9,7 @@ namespace Application.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        Task<List<T>> GetAll(Expression<Func<T, bool>> expression);
+        Task<List<T>> GetAll();
         Task<T> Get(Guid Id);
         Task<T> AddAsync(T entity);
         Task<ICollection<T>> AddRangeAsync(ICollection<T> entities);
