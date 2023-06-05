@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Commentaries;
 
-public class CommentaryGetDTO
+public class CommentaryGetDTO:CommentaryBaseDTO
 {
     public string Description { get; set; } = "";
     public Guid? UserId { get; set; }

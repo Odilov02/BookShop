@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
-public class Commentary : BaseAuditableEntity
+public class Commentary : BaseEntity
 {
-
     public string Description { get; set; } = "";
     public Guid UserId { get; set; }
     public User? User { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Application.DTOs.Books;
 
-public class BookGetDTO
+public class BookGetDTO:BookBaseDTO
 {
     public string Name { get; set; } = "";
 

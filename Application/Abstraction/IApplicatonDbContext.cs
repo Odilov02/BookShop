@@ -9,8 +9,8 @@ namespace Application.Abstraction
         DbSet<T> Set<T>() where T : class;
         DbSet<Author> Authors { get; set; }
         DbSet<Book> Books { get; set; }
-        DbSet<Category> Categorys { get; set; }
-        DbSet<Commentary> Commentarys { get; set; }
+        DbSet<Category> Categories { get; set; }
+        DbSet<Commentary> Commentaries { get; set; }
         DbSet<User> Users { get; set; }
         DbSet<Role> Roles { get; set; }
         DbSet<Permission> Permissions { get; set; }

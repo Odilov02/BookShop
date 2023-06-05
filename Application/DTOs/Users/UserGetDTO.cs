@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Users;
 
-public class UserGetDTO
+public class UserGetDTO:UserBaseDTO
 {
     public string FullName { get; set; } = "";
     public string PhoneNumber { get; set; } = "";
-    public string Password { get; set; } = "";
-    public ICollection<Guid>? RoleIds { get; set; }
+    public ICollection<int>? RoleIds { get; set; }
 
 }

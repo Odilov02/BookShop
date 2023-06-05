@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Controllers
+namespace WebUI.Controllers;
+
+public class ApiBaseController<T> : ControllerBase
 {
-    public class ApiBaseController : Controller
+    protected readonly IMapper _mapper;
+    protected readonly IValidator<T> _validator;
+    public ApiBaseController(IMapper mapper, IValidator<T> validator)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        _mapper = mapper;
+        _validator = validator;
     }
 }

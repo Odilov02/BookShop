@@ -8,5 +8,5 @@ namespace Application.DTOs.Roles;
 
 public class RoleBaseDTO
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 }

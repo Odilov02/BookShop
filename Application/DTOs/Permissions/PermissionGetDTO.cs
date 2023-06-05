@@ -9,6 +9,6 @@ namespace Application.DTOs.Permissions;
 
 public class PermissionGetDTO
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string PermissionName { get; set; } = "";
 }

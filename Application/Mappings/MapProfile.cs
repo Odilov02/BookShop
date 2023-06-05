@@ -37,16 +37,16 @@ public class MapProfile : Profile
     {
         CreateMap<AuthorCreateDTO, Author>().ReverseMap();
         CreateMap<AuthorUpdateDTO, Author>().ReverseMap();
-        CreateMap<Author, AuthorGetDTO>().ForMember(dest => dest.BooksId, opt => opt.MapFrom(src=>src!.Books!.Select(x=>x.Id)));
-        CreateMap<AuthorGetDTO, Author>().ForMember(dest =>dest.Books!.Select(x => x.Id), opt => opt.MapFrom(src=>src.BooksId));
+        CreateMap<Author, AuthorGetDTO>().ForMember(dest => dest.BookIds, opt => opt.MapFrom(src=>src!.Books!.Select(x=>x.Id)));
+        CreateMap<AuthorGetDTO, Author>().ForMember(dest => dest.Books!, opt => opt.MapFrom(src => src.BookIds!.Select(id => new Book() { Id = id }))); 
     }
 
     void BookMapping()
     {
         CreateMap<BookCreateDTO, Book>().ReverseMap();
         CreateMap<BookUpdateDTO, Book>().ReverseMap();
-        CreateMap<BookGetDTO, Book>().ForMember(dest => dest.Commentaries!.Select(c => c.Id), opt => opt.MapFrom(c => c.CommentariesId));
-        CreateMap<Book, BookGetDTO>().ForMember(dest => dest.CommentariesId!, opt => opt.MapFrom(c => c.Commentaries!.Select(c => c.Id)));
+        CreateMap<BookGetDTO, Book>().ForMember(dest => dest.Commentaries!, opt => opt.MapFrom(c => c.CommentaryIds!.Select(id=>new Commentary() { Id=id})));
+        CreateMap<Book, BookGetDTO>().ForMember(dest => dest.CommentaryIds!, opt => opt.MapFrom(c => c.Commentaries!.Select(c => c.Id)));
     }
 
     void CommentaryMappping()
@@ -58,14 +58,14 @@ public class MapProfile : Profile
 
     void RoleMapping()
     {
-        CreateMap<RoleCreateDTO, Role>().ForMember(dest => dest.permissions!.Select(c => c.Id), opt => opt.MapFrom(c => c.permissionsId));
-        CreateMap<Role, RoleCreateDTO>().ForMember(dest => dest.permissionsId, opt => opt.MapFrom(c => c.permissions!.Select(x=>x.Id)));
+        CreateMap<RoleCreateDTO, Role>().ForMember(dest => dest.permissions!, opt => opt.MapFrom(c => c.permissionIds!.Select(id=>new Permission() { Id=id})));
+        CreateMap<Role, RoleCreateDTO>().ForMember(dest => dest.permissionIds, opt => opt.MapFrom(c => c.permissions!.Select(x=>x.Id)));
 
-        CreateMap<RoleUpdateDTO, Role>().ForMember(dest => dest.permissions!.Select(x => x.Id), opt => opt.MapFrom(c => c.permissionsId));
-        CreateMap<Role, RoleUpdateDTO>().ForMember(dest => dest.permissionsId, opt => opt.MapFrom(c => c.permissions!.Select(x => x.Id)));
+        CreateMap<RoleUpdateDTO, Role>().ForMember(dest => dest.permissions!, opt => opt.MapFrom(c => c.permissionIds!.Select(id => new Permission() { Id = id })));
+        CreateMap<Role, RoleUpdateDTO>().ForMember(dest => dest.permissionIds, opt => opt.MapFrom(c => c.permissions!.Select(x => x.Id)));
 
-        CreateMap<RoleGetDTO, Role>().ForMember(dest => dest.permissions!.Select(x => x.Id), opt => opt.MapFrom(c => c.permissionsId));
-        CreateMap<Role, RoleGetDTO>().ForMember(dest => dest.permissionsId, opt => opt.MapFrom(c => c.permissions!.Select(x => x.Id)));
+        CreateMap<RoleGetDTO, Role>().ForMember(dest => dest.permissions!, opt => opt.MapFrom(c => c.permissionIds!.Select(id => new Permission() { Id = id })));
+        CreateMap<Role, RoleGetDTO>().ForMember(dest => dest.permissionIds, opt => opt.MapFrom(c => c.permissions!.Select(x => x.Id)));
     }
 
 
@@ -73,18 +73,15 @@ public class MapProfile : Profile
     {
         CreateMap<CategoryCreateDTO, Category>().ReverseMap();
         CreateMap<CategoryUpdateDTO, Category>().ReverseMap();
-        CreateMap<CategoryGetDTO, Category>().ForMember(dest => dest.Books!.Select(x => x.Id), opt => opt.MapFrom(x => x.BooksId));
-        CreateMap<Category, CategoryGetDTO>().ForMember(dest => dest.BooksId, opt => opt.MapFrom(c=>c.Books!.Select(x => x.Id)));
+        CreateMap<CategoryGetDTO, Category>().ForMember(dest => dest.Books!, opt => opt.MapFrom(x => x.BookIds!.Select(id=>new Book() { Id=id})));
+        CreateMap<Category, CategoryGetDTO>().ForMember(dest => dest.BookIds, opt => opt.MapFrom(c=>c.Books!.Select(x => x.Id)));
     }
 
     void UserMapping()
     {
         CreateMap<UserCreateDTO, User>().ReverseMap();
 
-        CreateMap<UserUpdateDTO, User>().ForMember(dest => dest.Roles!.Select(x => x.Id), opt => opt.MapFrom(x => x.RolesId));
-        CreateMap<User, UserUpdateDTO>().ForMember(dest => dest.RolesId, opt => opt.MapFrom(x=>x.Roles!.Select(x => x.Id)));
-        
-        CreateMap<UserGetDTO, User>().ForMember(dest => dest.Roles, opt => opt.MapFrom(x => x.RoleIds.Select(id=>new Role() { Id=id})));
+        CreateMap<UserGetDTO, User>().ForMember(dest => dest.Roles, opt => opt.MapFrom(x => x.RoleIds!.Select(id=>new Role() { Id=id})));
         CreateMap<User, UserGetDTO>().ForMember(dest => dest.RoleIds, opt => opt.MapFrom(x=>x.Roles!.Select(x => x.Id)));
     }
 

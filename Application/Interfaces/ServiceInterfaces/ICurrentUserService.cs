@@ -2,5 +2,5 @@
 
 public interface ICurrentUserService
 {
-     string Id();
+     string GetUserId();
 }

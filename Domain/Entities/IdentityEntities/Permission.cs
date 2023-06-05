@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.IdentityEntities;
 
-public class Permission: BaseEntity
+public class Permission
 {
+    public int Id { get; set; }
     public string PermissionName { get; set; } = "";
     public ICollection<Role>? Roles { get; set; }
 

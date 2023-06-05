@@ -5,11 +5,11 @@ namespace WebUI.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
-    public string Id()
+    public string GetUserId()
     {
-        var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-        var UserId = claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase))?.Value;
-        return UserId;
+        var claims = ClaimsPrincipal.Current!.Identities.First().Claims.ToList();
+        var UserId =  claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase))?.Value;
+        return UserId!;
     }
 }
 

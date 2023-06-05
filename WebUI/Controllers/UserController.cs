@@ -1,68 +1,99 @@
-﻿using Application.DTOs.Users;
-using Application.ResponseCoreModel;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation.Results;
-using Application.Interfaces.ServiceInterfaces;
-using WebUI.Filters;
-using Application.Models;
+﻿using Application.DTOs.users;
+using Application.DTOs.Users;
 using Application.Extentions;
-using Infrastructure.Services;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Authorization;
+using Application.Interfaces.ServiceInterfaces;
+using Application.Models;
+using Application.ResponseCoreModel;
 using AutoMapper;
+using Domain.Entities;
+using Domain.Entities.IdentityEntities;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebUI.Filters;
 namespace WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-  //  [Authorize]
-    public class UserController : ControllerBase
+    [Authorize]
+    public class UserController : ApiBaseController<User>
     {
-        protected readonly IValidator<User> _validator;
-
-        protected IMapper _mapper => HttpContext.RequestServices.GetRequiredService<IMapper>();
-
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
+        private readonly IRoleService _roleService;
 
-        public UserController(IUserService userService,ITokenService tokenService, IValidator<User> validator)
+        public UserController(IRoleService roleService, IUserService userService, ITokenService tokenService, IValidator<User> validator, IMapper mapper) : base(mapper, validator)
         {
+            _roleService = roleService;
             _userService = userService;
             _tokenService = tokenService;
-            _validator = validator;
-        }
-
-        [HttpPost]
-        [Route("CreateUser")]
-      //  [ModelValidationAttribute]
-      //  [AllowAnonymous]
-        public async Task<ActionResult<ResponseCore<UserCreateDTO>>> CreateUser([FromBody] UserCreateDTO userDto)
-        {
-            userDto.Password = userDto.Password.stringHash()!;
-            User user = _mapper.Map<User>(userDto);
-            var validationResult = _validator.Validate(user);
-
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ResponseCore<UserCreateDTO>(false, validationResult.Errors));
-            }
-            User resultUser = await _userService.AddAsync(user);
-            UserCreateDTO result = _mapper.Map<UserCreateDTO>(resultUser);
-            return Ok(new ResponseCore<UserCreateDTO>() { IsSuccess = true, Result = result });
         }
 
 
         [HttpPost("[action]")]
-        [ModelValidationAttribute]
+        [AllowAnonymous]
+        [ModelValidation]
+        public async Task<ActionResult<ResponseCore<bool>>> CreateUser([FromBody] UserCreateDTO userDto)
+        {
+            User user = _mapper.Map<User>(userDto);
+            var validationResult = _validator.Validate(user);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new ResponseCore<bool>(false, validationResult.Errors));
+            }
+            user.Password = user.Password.stringHash()!;
+            if (_userService.GetAll()==null)
+            {
+            Role role = new()
+            {
+                Id = 1,
+                RoleName = "SuperAdmin",
+                permissions = new List<Permission>()
+                {
+                    new Permission() {Id=1},
+                    new Permission() {Id=2},
+                    new Permission() {Id=3},
+                    new Permission() {Id=4},
+                    new Permission() {Id=5},
+                    new Permission() {Id=6},
+                    new Permission() {Id=7},
+                    new Permission() {Id=8},
+                    new Permission() {Id=9},
+                    new Permission() {Id=10},
+                    new Permission() {Id=11},
+                    new Permission() {Id=12},
+                    new Permission() {Id=13},
+                    new Permission() {Id=14},
+                    new Permission() {Id=15},
+                    new Permission() {Id=16},
+                    new Permission() {Id=17},
+                    new Permission() {Id=18},
+                    new Permission() {Id=19},
+                    new Permission() {Id=20},
+                    new Permission() {Id=21},
+                    new Permission() {Id=22},
+                    new Permission() {Id=23},
+                    new Permission() {Id=24},
+                    new Permission() {Id=25}
+                }
+            };
+            await _roleService.AddAsync(role);
+            user.Roles = new List<Role>() { role };
+            }
+            await _userService.AddAsync(user);
+            return Ok(new ResponseCore<bool>() { IsSuccess = true, Result = true });
+        }
+
+
+
+        [HttpPost("[action]")]
+        [ModelValidation]
         [AllowAnonymous]
         public async Task<ActionResult<ResponseCore<Token>>> LoginUser([FromBody] UserCredential userCredential)
         {
             userCredential.Password = userCredential.Password.stringHash()!;
-            User? user = (await _userService.GetAll(x => true)).FirstOrDefault(x=>x.Password == userCredential.Password);
-            if (user==null)
+            User? user = (await _userService.GetAll()).FirstOrDefault(x => x.Password == userCredential.Password);
+            if (user == null)
             {
                 return BadRequest(new ResponseCore<UserCreateDTO>(false, "User not found"));
             }
@@ -72,6 +103,111 @@ namespace WebUI.Controllers
                 RefreshToken = await _tokenService.CreateRefreshAccesToken(user!)
             };
             return Ok(new ResponseCore<Token>() { IsSuccess = true, Result = token });
+        }
+
+
+
+        [HttpPut]
+        [Route("[action]")]
+        [Authorize(Roles = "UpdateUser")]
+        [ModelValidation]
+        public async Task<ActionResult<ResponseCore<List<UserUpdateDTO>>>> UpdateUser(UserUpdateDTO userDto, string password, string phoneNumber)
+        {
+            User user = _mapper.Map<User>(userDto);
+            var validationResult = _validator.Validate(user);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(new ResponseCore<UserUpdateDTO>(false, validationResult.Errors));
+            }
+            user.Password = user!.Password!.stringHash()!;
+
+            password = password!.stringHash()!;
+            User? userUpdate = (await _userService.GetAll()).Where(x => x.Password == password &&
+                                                                  x.PhoneNumber == phoneNumber)
+                                                                            .FirstOrDefault();
+            if (userUpdate == null)
+            {
+                return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "User not found" });
+            }
+            userUpdate.PhoneNumber = user.PhoneNumber;
+            userUpdate.FullName = user.FullName;
+            userUpdate.Password = user.Password;
+            await _userService.UpdateAsync(userUpdate);
+            var result = _mapper.Map<UserUpdateDTO>(userUpdate);
+            ResponseCore<UserUpdateDTO> ResponseCoreCore = new ResponseCore<UserUpdateDTO>()
+            {
+                IsSuccess = true,
+                Result = result
+            };
+            return Ok(ResponseCoreCore);
+        }
+
+
+        [HttpPut]
+        [Route("[action]")]
+        [Authorize(Roles = "UpdateUserForAdmin")]
+        [ModelValidation]
+        public async Task<ActionResult<ResponseCore<List<bool>>>> UpdateUserForAdmin(Guid Id, int[] RolesId)
+        {
+            User? user = await _userService.Get(Id);
+            if (user == null)
+            {
+                return BadRequest(new ResponseCore<bool>() { IsSuccess = false, Errors = "User not found" });
+            }
+            UserGetDTO userGetDTO = _mapper.Map<UserGetDTO>(user);
+            userGetDTO.RoleIds = RolesId;
+            User userUpdate = _mapper.Map<User>(userGetDTO);
+            var result = await _userService.UpdateAsync(userUpdate);
+            return Ok(new ResponseCore<bool>() { IsSuccess = true, Result = result });
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize(Roles = "GetUser")]
+        [ModelValidation]
+        public async Task<ActionResult<ResponseCore<UserGetDTO>>> GetUser(Guid Id)
+        {
+            User? user = await _userService.Get(Id);
+            if (user == null)
+            {
+                return BadRequest(new ResponseCore<UserGetDTO>() { IsSuccess = false, Errors = "User not found" });
+            }
+            UserGetDTO userGetDto = _mapper.Map<UserGetDTO>(user);
+            return Ok(new ResponseCore<UserGetDTO>() { IsSuccess = true, Result = userGetDto });
+
+        }
+
+
+
+        [HttpDelete]
+        [Route("[action]")]
+        [Authorize(Roles = "DeleteUser")]
+        [ModelValidation]
+        public async Task<ActionResult<ResponseCore<bool>>> DeleteUser([FromBody] UserCredential userCredential)
+        {
+            userCredential.Password = userCredential!.Password!.stringHash()!;
+            User? user = (await _userService.GetAll()).Where(x => x.Password == userCredential.Password &&
+                                                                  x.PhoneNumber == userCredential.phoneNumber)
+                                                                            .FirstOrDefault();
+            if (user == null)
+            {
+                return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "User not found" });
+            }
+            var result = await _userService.DeleteAsync(user);
+            return Ok(new ResponseCore<bool>() { Result = result });
+        }
+
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize(Roles = "GetAllUser")]
+        [ModelValidation]
+        public async Task<ActionResult<ResponseCore<PaginatedList<UserGetDTO>>>> GetAllUser(int pageSize = 10, int pageIndex = 1)
+        {
+            List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>(await _userService.GetAll());
+            PaginatedList<UserGetDTO> paginatedList = PaginatedList<UserGetDTO>.CreateAsync(userGetDtos, pageSize, pageIndex);
+            return Ok(new ResponseCore<PaginatedList<UserGetDTO>>() { IsSuccess = true, Result = paginatedList });
         }
     }
 }

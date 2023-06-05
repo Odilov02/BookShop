@@ -2,10 +2,10 @@
 namespace Application.DTOs.Authors;
 
 
-public class AuthorGetDTO
+public class AuthorGetDTO:AuthorkBaseDTO
 {
     public string FullName { get; set; } = "";
 
     public string Description { get; set; } = "";
-    public ICollection<Guid>? BooksId { get; set; }
+    public ICollection<Guid>? BookIds { get; set; }
 }

@@ -17,11 +17,12 @@ namespace Infrastructure.DataAcces
         }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<Category> Categorys { get; set; }
-        public DbSet<Commentary> Commentarys { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Commentary> Commentaries { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+      
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.AddInterceptors(_interceptor);
