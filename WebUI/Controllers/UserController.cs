@@ -42,13 +42,13 @@ namespace WebUI.Controllers
                 return BadRequest(new ResponseCore<bool>(false, validationResult.Errors));
             }
             user.Password = user.Password.stringHash()!;
-            if (_userService.GetAll()==null)
+            if (_userService.GetAll() == null)
             {
-            Role role = new()
-            {
-                Id = 1,
-                RoleName = "SuperAdmin",
-                permissions = new List<Permission>()
+                Role role = new()
+                {
+                    Id = 1,
+                    RoleName = "SuperAdmin",
+                    permissions = new List<Permission>()
                 {
                     new Permission() {Id=1},
                     new Permission() {Id=2},
@@ -72,13 +72,10 @@ namespace WebUI.Controllers
                     new Permission() {Id=20},
                     new Permission() {Id=21},
                     new Permission() {Id=22},
-                    new Permission() {Id=23},
-                    new Permission() {Id=24},
-                    new Permission() {Id=25}
                 }
-            };
-            await _roleService.AddAsync(role);
-            user.Roles = new List<Role>() { role };
+                };
+                await _roleService.AddAsync(role);
+                user.Roles = new List<Role>() { role };
             }
             await _userService.AddAsync(user);
             return Ok(new ResponseCore<bool>() { IsSuccess = true, Result = true });
@@ -109,7 +106,6 @@ namespace WebUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
-        [Authorize(Roles = "UpdateUser")]
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<List<UserUpdateDTO>>>> UpdateUser(UserUpdateDTO userDto, string password, string phoneNumber)
         {
@@ -161,6 +157,7 @@ namespace WebUI.Controllers
             return Ok(new ResponseCore<bool>() { IsSuccess = true, Result = result });
         }
 
+
         [HttpGet]
         [Route("[action]")]
         [Authorize(Roles = "GetUser")]
@@ -181,7 +178,6 @@ namespace WebUI.Controllers
 
         [HttpDelete]
         [Route("[action]")]
-        [Authorize(Roles = "DeleteUser")]
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<bool>>> DeleteUser([FromBody] UserCredential userCredential)
         {
@@ -201,11 +197,24 @@ namespace WebUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        [Authorize(Roles = "GetAllUser")]
+        [Authorize(Roles = "GetUser")]
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<PaginatedList<UserGetDTO>>>> GetAllUser(int pageSize = 10, int pageIndex = 1)
         {
             List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>(await _userService.GetAll());
+            PaginatedList<UserGetDTO> paginatedList = PaginatedList<UserGetDTO>.CreateAsync(userGetDtos, pageSize, pageIndex);
+            return Ok(new ResponseCore<PaginatedList<UserGetDTO>>() { IsSuccess = true, Result = paginatedList });
+        }
+
+
+
+        [HttpGet("Search")]
+        [Authorize(Roles = "GetUser")]
+        public async Task<ActionResult<ResponseCore<PaginatedList<UserGetDTO>>>> Searching(string SearchString, int pageSize = 10, int pageIndex = 1)
+        {
+
+            List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>((await _userService.GetAll())
+                                                  .Where(x => x.FullName.Contains(SearchString)));
             PaginatedList<UserGetDTO> paginatedList = PaginatedList<UserGetDTO>.CreateAsync(userGetDtos, pageSize, pageIndex);
             return Ok(new ResponseCore<PaginatedList<UserGetDTO>>() { IsSuccess = true, Result = paginatedList });
         }

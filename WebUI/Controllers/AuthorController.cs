@@ -113,5 +113,16 @@ namespace WebUI.Controllers
             PaginatedList<AuthorGetDTO> paginatedList = PaginatedList<AuthorGetDTO>.CreateAsync(authorGetDtos, pageSize, pageIndex);
             return Ok(new ResponseCore<PaginatedList<AuthorGetDTO>>() { IsSuccess = true, Result = paginatedList });
         }
+
+
+
+         [HttpGet("[action]")]
+        [Authorize(Roles = "GetAuthor")]
+        public async Task<ActionResult<ResponseCore<PaginatedList<AuthorGetDTO>>>> SearchingAuthor(int pageSize = 10, int pageIndex = 1)
+        {
+            List<AuthorGetDTO> authorGetDtos = _mapper.Map<List<AuthorGetDTO>>(await _authorService.GetAll());
+            PaginatedList<AuthorGetDTO> paginatedList = PaginatedList<AuthorGetDTO>.CreateAsync(authorGetDtos, pageSize, pageIndex);
+            return Ok(new ResponseCore<PaginatedList<AuthorGetDTO>>() { IsSuccess = true, Result = paginatedList });
+        }
     }
 }

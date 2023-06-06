@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Books;
-using Application.DTOs.users;
 using Application.DTOs.Users;
 using Application.Interfaces.ServiceInterfaces;
 using Application.Models;
@@ -110,10 +109,25 @@ public class BookController : ApiBaseController<Book>
     [HttpGet]
     [Route("[action]")]
     [AllowAnonymous]
-    [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<BookGetDTO>>>> GetAllBook(int pageSize = 10, int pageIndex = 1)
     {
         List<BookGetDTO> bookGetDtos = _mapper.Map<List<BookGetDTO>>(await _bookService.GetAll());
+        PaginatedList<BookGetDTO> paginatedList = PaginatedList<BookGetDTO>.CreateAsync(bookGetDtos, pageSize, pageIndex);
+        return Ok(new ResponseCore<PaginatedList<BookGetDTO>>() { IsSuccess = true, Result = paginatedList });
+    }
+
+
+    [HttpGet]
+    [Route("[action]")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ResponseCore<PaginatedList<BookGetDTO>>>> SearchingBook(string searchingString, int pageSize = 10, int pageIndex = 1)
+    {
+        List<BookGetDTO> bookGetDtos = _mapper.Map<List<BookGetDTO>>(await _bookService.GetAll())
+                                              .Where(x => x.Language.Contains(searchingString) ||
+                                                          x.Count.ToString().Contains(searchingString) ||
+                                                          x.Description.Contains(searchingString) ||
+                                                          x.Name.Contains(searchingString)
+                                              ).ToList();
         PaginatedList<BookGetDTO> paginatedList = PaginatedList<BookGetDTO>.CreateAsync(bookGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<BookGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }

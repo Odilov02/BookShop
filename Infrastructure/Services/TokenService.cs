@@ -77,7 +77,7 @@ public class TokenService : ITokenService
     }
     public async Task<bool> IsActive(string token)
     {
-        ICollection<RefreshToken> refreshTokens = await _tokenService.GetAll(x => true);
+        ICollection<RefreshToken> refreshTokens = await _tokenService.GetAll();
         var refreshToken = refreshTokens.FirstOrDefault(x => x.Refresh == token);
         if (refreshToken == null) return false;
         if (DateTime.UtcNow < refreshToken!.ActiveDate)

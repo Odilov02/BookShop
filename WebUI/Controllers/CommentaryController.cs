@@ -27,7 +27,6 @@ public class CommentaryController : ApiBaseController<Commentary>
 
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "CreateCommentary")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<List<CommentaryCreateDTO>>>> CreateCommenatry([FromBody] CommentaryCreateDTO commentaryDto)
     {
@@ -92,9 +91,8 @@ public class CommentaryController : ApiBaseController<Commentary>
 
     [HttpGet]
     [Route("[action]")]
-    [Authorize(Roles = "GetCommentary")]
-    [ModelValidation]
-    public async Task<ActionResult<ResponseCore<CommentaryGetDTO>>> GetAuthor(Guid Id)
+    [AllowAnonymous]
+    public async Task<ActionResult<ResponseCore<CommentaryGetDTO>>> GetCommentary(Guid Id)
     {
         Commentary? commentary = await _commentaryService.Get(Id);
         if (commentary == null)
@@ -109,8 +107,7 @@ public class CommentaryController : ApiBaseController<Commentary>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetAllCommentary")]
-    [ModelValidation]
+    [AllowAnonymous]
     public async Task<ActionResult<ResponseCore<PaginatedList<CommentaryGetDTO>>>> GetAllCommentary(int pageSize = 10, int pageIndex = 1)
     {
         List<CommentaryGetDTO> commentaryGetDtos = _mapper.Map<List<CommentaryGetDTO>>(await _commentaryService.GetAll());

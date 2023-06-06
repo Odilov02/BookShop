@@ -12,6 +12,7 @@ public static class RegisterService
 {
     public static IServiceCollection AddDomainServices(this IServiceCollection services, IConfiguration configuration)
     {
+
         return services;
     }
 }

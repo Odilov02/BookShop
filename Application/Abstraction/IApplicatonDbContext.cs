@@ -7,9 +7,9 @@ namespace Application.Abstraction
     public interface IApplicatonDbcontext
     {
         DbSet<T> Set<T>() where T : class;
-        DbSet<Author> Authors { get; set; }
-        DbSet<Book> Books { get; set; }
         DbSet<Category> Categories { get; set; }
+        DbSet<Book> Books { get; set; }
+        DbSet<Author> Authors { get; set; }
         DbSet<Commentary> Commentaries { get; set; }
         DbSet<User> Users { get; set; }
         DbSet<Role> Roles { get; set; }

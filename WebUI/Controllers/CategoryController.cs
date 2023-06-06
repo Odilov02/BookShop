@@ -6,7 +6,6 @@ using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebUI.Controllers;
 using WebUI.Filters;
@@ -58,7 +57,7 @@ public class CategoryController : ApiBaseController<Category>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<List<CategoryUpdateDTO>>>> UpdateCategory([FromBody] CategoryUpdateDTO categoryDto)
     {
-        Category category  = _mapper.Map<Category>(categoryDto);
+        Category category = _mapper.Map<Category>(categoryDto);
         var validationResult = _validator.Validate(category);
         if (!validationResult.IsValid)
         {
@@ -112,11 +111,24 @@ public class CategoryController : ApiBaseController<Category>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetAllCategory")]
+    [Authorize(Roles = "GetCategory")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> GetAllCAtegory(int pageSize = 10, int pageIndex = 1)
     {
         List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAll());
+        PaginatedList<CategoryGetDTO> paginatedList = PaginatedList<CategoryGetDTO>.CreateAsync(commentaryGetDtos, pageSize, pageIndex);
+        return Ok(new ResponseCore<PaginatedList<CategoryGetDTO>>() { IsSuccess = true, Result = paginatedList });
+    }
+
+
+
+    [HttpGet("[action]")]
+    [Authorize(Roles = "GetCategory")]
+    [ModelValidation]
+    public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> SearchingCategory(string searchString, int pageSize = 10, int pageIndex = 1)
+    {
+        List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAll())
+                                                         .Where(x => x.Name.Contains(searchString)).ToList();
         PaginatedList<CategoryGetDTO> paginatedList = PaginatedList<CategoryGetDTO>.CreateAsync(commentaryGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<CategoryGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }

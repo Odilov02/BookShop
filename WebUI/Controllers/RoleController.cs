@@ -1,6 +1,7 @@
 ﻿
 using Application.DTOs.Authors;
 using Application.DTOs.Roles;
+using Application.DTOs.Users;
 using Application.Interfaces.ServiceInterfaces;
 using Application.Models;
 using Application.ResponseCoreModel;
@@ -112,11 +113,23 @@ public class RoleController : ApiBaseController<Role>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetAllRole")]
+    [Authorize(Roles = "GetRole")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<RoleGetDTO>>>> GetAllRole(int pageSize = 10, int pageIndex = 1)
     {
         List<RoleGetDTO> roleGetDtos = _mapper.Map<List<RoleGetDTO>>(await _roleService.GetAll());
+        PaginatedList<RoleGetDTO> paginatedList = PaginatedList<RoleGetDTO>.CreateAsync(roleGetDtos, pageSize, pageIndex);
+        return Ok(new ResponseCore<PaginatedList<RoleGetDTO>>() { IsSuccess = true, Result = paginatedList });
+    }
+
+
+    [HttpGet("SearchingRole")]
+    [Authorize(Roles = "GetRole")]
+    public async Task<ActionResult<ResponseCore<PaginatedList<RoleGetDTO>>>> SearchingRole(string SearchString, int pageSize = 10, int pageIndex = 1)
+    {
+
+        List<RoleGetDTO> roleGetDtos = _mapper.Map<List<RoleGetDTO>>((await _roleService.GetAll())
+                                              .Where(x => x.RoleName!.Contains(SearchString)));
         PaginatedList<RoleGetDTO> paginatedList = PaginatedList<RoleGetDTO>.CreateAsync(roleGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<RoleGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }

@@ -46,7 +46,7 @@ public class PermissionController : ApiBaseController<Permission>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetAllPermission")]
+    [Authorize(Roles = "GetPermission")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<PermissionGetDTO>>>> GetAllPermission(int pageSize = 10, int pageIndex = 1)
     {
@@ -54,4 +54,18 @@ public class PermissionController : ApiBaseController<Permission>
         PaginatedList<PermissionGetDTO> paginatedList = PaginatedList<PermissionGetDTO>.CreateAsync(permissionGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<PermissionGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }
+
+
+
+    [HttpGet("SearchingPermission")]
+    [Authorize(Roles = "GetPermission")]
+    public async Task<ActionResult<ResponseCore<PaginatedList<PermissionGetDTO>>>> SearchingPermission(string SearchString, int pageSize = 10, int pageIndex = 1)
+    {
+        List<PermissionGetDTO> permissionGetDtos = _mapper.Map<List<PermissionGetDTO>>(await _permissionService.GetAll())
+                                                          .Where(x => x.PermissionName.Contains(SearchString)).ToList();
+        PaginatedList<PermissionGetDTO> paginatedList = PaginatedList<PermissionGetDTO>.CreateAsync(permissionGetDtos, pageSize, pageIndex);
+        return Ok(new ResponseCore<PaginatedList<PermissionGetDTO>>() { IsSuccess = true, Result = paginatedList });
+    }
+
+
 }

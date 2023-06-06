@@ -7,12 +7,12 @@ namespace Infrastructure.DataAcces.Interceptor;
 
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {
-    //private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserService _currentUserService;
 
-    //public AuditableEntitySaveChangesInterceptor(ICurrentUserService currentUserService)
-    //{
-      //  _currentUserService = currentUserService;
-    //}
+    public AuditableEntitySaveChangesInterceptor(ICurrentUserService currentUserService)
+    {
+        _currentUserService = currentUserService;
+    }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -34,13 +34,13 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
         {
             if (item.State == EntityState.Added)
             {
-                item.Entity.CreatedBy = "salom";
+                item.Entity.CreatedBy = _currentUserService.GetUserId();
                item.Entity.Created = DateTime.UtcNow;
             }
             if (item.State == EntityState.Unchanged)
             {
                 item.Entity.Lasted = DateTime.UtcNow;
-                item.Entity.LastedBy = "salom";
+                item.Entity.LastedBy = _currentUserService.GetUserId();
             }
         }
     }
