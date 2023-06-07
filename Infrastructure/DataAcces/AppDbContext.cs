@@ -15,13 +15,13 @@ namespace Infrastructure.DataAcces
         {
             _interceptor = interceptor;
         }
-        public DbSet<Category> Categories { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<Author> Authors { get; set; }
         public DbSet<Commentary> Commentaries { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,33 +31,33 @@ namespace Infrastructure.DataAcces
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Permission>().HasData(
-                new Permission() { Id = 1, PermissionName = "CreateAuthor" },
-                new Permission() { Id = 2, PermissionName = "GetAuthor" },
-                new Permission() { Id = 3, PermissionName = "UpdateAuthor" },
-                new Permission() { Id = 4, PermissionName = "DeleteAuthor" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "CreateAuthor" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "GetAuthor" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "UpdateAuthor" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "DeleteAuthor" },
 
-                new Permission() { Id = 6, PermissionName = "GetUser" },
-                new Permission() { Id = 7, PermissionName = "UpdateUserForAdmin" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "GetUser" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "UpdateUserForAdmin" },
 
-                new Permission() { Id = 8, PermissionName = "GetPermission" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "GetPermission" },
 
-                new Permission() { Id = 9, PermissionName = "GetBook" },
-                new Permission() { Id = 10, PermissionName = "UpdateBook" },
-                new Permission() { Id = 11, PermissionName = "DeleteBook" },
-                new Permission() { Id = 12, PermissionName = "CreateBook" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "GetBook" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "UpdateBook" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "DeleteBook" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "CreateBook" },
 
-                new Permission() { Id = 13, PermissionName = "CreateCategory" },
-                new Permission() { Id = 14, PermissionName = "GetCategory" },
-                new Permission() { Id = 15, PermissionName = "UpdateCategory" },
-                new Permission() { Id = 16, PermissionName = "DeleteCategory" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "CreateCategory" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "GetCategory" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "UpdateCategory" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "DeleteCategory" },
 
-                new Permission() { Id = 17, PermissionName = "UpdateCommentary" },
-                new Permission() { Id = 18, PermissionName = "DeleteCommentary" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "UpdateCommentary" },
+                new Permission() {Id=Guid.NewGuid(), PermissionName = "DeleteCommentary" },
 
-                new Permission() { Id = 19, PermissionName = "CreateRole" },
-                new Permission() { Id = 20, PermissionName = "GetRole" },
-                new Permission() { Id = 21, PermissionName = "UpdateRole" },
-                new Permission() { Id = 22, PermissionName = "DeleteRole" }
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "CreateRole" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "GetRole" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "UpdateRole" },
+                new Permission() {Id=Guid.NewGuid(),  PermissionName = "DeleteRole" }
                 );
         }
     }

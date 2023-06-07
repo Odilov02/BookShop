@@ -19,6 +19,8 @@ namespace Application
             services.AddScoped<IValidator<Role>, RoleValidation>();
             services.AddScoped<IValidator<Commentary>, CommentaryValidation>();
             services.AddScoped<IValidator<Category>, CategoryValidation>();
+            services.AddScoped<IValidator<Permission>, PermissionValidation>();
+
             return services;
         }
     }

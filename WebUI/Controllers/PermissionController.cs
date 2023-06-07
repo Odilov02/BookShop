@@ -46,7 +46,8 @@ public class PermissionController : ApiBaseController<Permission>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetPermission")]
+    // [Authorize(Roles = "GetPermission")]
+    [AllowAnonymous]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<PermissionGetDTO>>>> GetAllPermission(int pageSize = 10, int pageIndex = 1)
     {

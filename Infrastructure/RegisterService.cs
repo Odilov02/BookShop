@@ -15,7 +15,6 @@ namespace Infrastructure
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("Default")));
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
-            services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<ICommentaryService, CommentarySerivce>();
             services.AddScoped<ITokenService,TokenService>();
@@ -26,6 +25,8 @@ namespace Infrastructure
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IUserService, UserSevice>();
            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             return services;
         }

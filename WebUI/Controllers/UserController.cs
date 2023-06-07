@@ -20,63 +20,28 @@ namespace WebUI.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        private readonly IRoleService _roleService;
-
-        public UserController(IRoleService roleService, IUserService userService, ITokenService tokenService, IValidator<User> validator, IMapper mapper) : base(mapper, validator)
+        public UserController(IUserService userService, ITokenService tokenService, IValidator<User> validator, IMapper mapper) : base(mapper, validator)
         {
-            _roleService = roleService;
             _userService = userService;
             _tokenService = tokenService;
         }
 
 
-        [HttpPost("[action]")]
+
+        [HttpPost]
+        [Route("[action]")]
         [AllowAnonymous]
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<bool>>> CreateUser([FromBody] UserCreateDTO userDto)
         {
             User user = _mapper.Map<User>(userDto);
+          
             var validationResult = _validator.Validate(user);
             if (!validationResult.IsValid)
             {
                 return BadRequest(new ResponseCore<bool>(false, validationResult.Errors));
             }
             user.Password = user.Password.stringHash()!;
-            if (_userService.GetAll() == null)
-            {
-                Role role = new()
-                {
-                    Id = 1,
-                    RoleName = "SuperAdmin",
-                    permissions = new List<Permission>()
-                {
-                    new Permission() {Id=1},
-                    new Permission() {Id=2},
-                    new Permission() {Id=3},
-                    new Permission() {Id=4},
-                    new Permission() {Id=5},
-                    new Permission() {Id=6},
-                    new Permission() {Id=7},
-                    new Permission() {Id=8},
-                    new Permission() {Id=9},
-                    new Permission() {Id=10},
-                    new Permission() {Id=11},
-                    new Permission() {Id=12},
-                    new Permission() {Id=13},
-                    new Permission() {Id=14},
-                    new Permission() {Id=15},
-                    new Permission() {Id=16},
-                    new Permission() {Id=17},
-                    new Permission() {Id=18},
-                    new Permission() {Id=19},
-                    new Permission() {Id=20},
-                    new Permission() {Id=21},
-                    new Permission() {Id=22},
-                }
-                };
-                await _roleService.AddAsync(role);
-                user.Roles = new List<Role>() { role };
-            }
             await _userService.AddAsync(user);
             return Ok(new ResponseCore<bool>() { IsSuccess = true, Result = true });
         }
@@ -139,11 +104,12 @@ namespace WebUI.Controllers
         }
 
 
+
         [HttpPut]
         [Route("[action]")]
         [Authorize(Roles = "UpdateUserForAdmin")]
         [ModelValidation]
-        public async Task<ActionResult<ResponseCore<List<bool>>>> UpdateUserForAdmin(Guid Id, int[] RolesId)
+        public async Task<ActionResult<ResponseCore<List<bool>>>> UpdateUserForAdmin(Guid Id, Guid[] RolesId)
         {
             User? user = await _userService.Get(Id);
             if (user == null)

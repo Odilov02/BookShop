@@ -35,9 +35,9 @@ namespace Infrastructure.Services
             return true;
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>>? GetAll()
         {
-            List<T> entities = _db.Set<T>().ToList();
+            List<T>? entities = _db.Set<T>().ToList();
             await _db.SaveChangesAsync();
             return entities;
         }

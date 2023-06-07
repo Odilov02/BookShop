@@ -31,7 +31,8 @@ public class RoleController : ApiBaseController<Role>
 
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "CreateRole")]
+    // [Authorize(Roles = "CreateRole")]
+    [AllowAnonymous]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<List<RoleCreateDTO>>>> CreateRole([FromBody] RoleCreateDTO roleDto)
     {

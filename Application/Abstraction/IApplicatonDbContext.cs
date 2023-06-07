@@ -7,13 +7,13 @@ namespace Application.Abstraction
     public interface IApplicatonDbcontext
     {
         DbSet<T> Set<T>() where T : class;
-        DbSet<Category> Categories { get; set; }
-        DbSet<Book> Books { get; set; }
-        DbSet<Author> Authors { get; set; }
-        DbSet<Commentary> Commentaries { get; set; }
-        DbSet<User> Users { get; set; }
-        DbSet<Role> Roles { get; set; }
-        DbSet<Permission> Permissions { get; set; }
+        DbSet<Book> Books { get;  }
+        DbSet<Commentary> Commentaries { get; }
+        DbSet<Category> Categories { get; }
+        DbSet<Author> Authors { get;}
+        DbSet<User> Users { get; }
+        DbSet<Role> Roles { get; }
+        DbSet<Permission> Permissions { get;}
 
         Task<int> SaveChangesAsync(CancellationToken token = default);
     }

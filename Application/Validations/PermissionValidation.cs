@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.Roles;
-
-public class RoleBaseDTO
+namespace Application.Validations
 {
-    public Guid Id { get; set; }
+    internal class PermissionValidation
+    {
+    }
 }
