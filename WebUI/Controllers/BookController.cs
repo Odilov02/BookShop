@@ -17,10 +17,14 @@ namespace WebUI.Controllers;
 public class BookController : ApiBaseController<Book>
 {
     private readonly IBookService _bookService;
+    private readonly IAuthorService _authorService;
+    private readonly ICategoryService _categoryService;
 
-    public BookController(IBookService bookService, IMapper mapper, IValidator<Book> validator) : base(mapper, validator)
+    public BookController(IBookService bookService, IAuthorService authorService, ICategoryService categoryService, IMapper mapper, IValidator<Book> validator) : base(mapper, validator)
     {
         _bookService = bookService;
+        _authorService = authorService;
+        _categoryService= categoryService;
     }
 
 
@@ -51,7 +55,7 @@ public class BookController : ApiBaseController<Book>
     [Route("[action]")]
     [Authorize(Roles = "UpdateBook")]
     [ModelValidation]
-    public async Task<ActionResult<ResponseCore<List<BookUpdateDTO>>>> UpdateBook([FromBody] BookUpdateDTO bookDTO)
+    public async Task<ActionResult<ResponseCore<bool>>> UpdateBook([FromBody] BookUpdateDTO bookDTO)
     {
         Book book = _mapper.Map<Book>(bookDTO);
         var validationResult = _validator.Validate(book);
@@ -59,9 +63,20 @@ public class BookController : ApiBaseController<Book>
         {
             return BadRequest(new ResponseCore<BookUpdateDTO>(false, validationResult.Errors));
         }
+        Author? author =await _authorService.Get(bookDTO.AuthorId);
+        if (author==null)
+        {
+            return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Author not found" });
+        }
+        Category? category =await _categoryService.Get(bookDTO.CategoryId);
+        if (category==null)
+        {
+
+            return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Category not found" });
+        }
         await _bookService.UpdateAsync(book);
-        var result = _mapper.Map<BookUpdateDTO>(book);
-        ResponseCore<BookUpdateDTO> ResponseCoreCore = new ResponseCore<BookUpdateDTO>()
+        var result = await _bookService.UpdateAsync(book);
+        ResponseCore<bool> ResponseCoreCore = new ResponseCore<bool>()
         {
             IsSuccess = true,
             Result = result

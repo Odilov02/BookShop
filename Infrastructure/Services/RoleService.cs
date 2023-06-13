@@ -1,6 +1,7 @@
 ﻿using Application.Abstraction;
 using Domain.Entities.IdentityEntities;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Application.Interfaces.ServiceInterfaces
 {

@@ -20,10 +20,12 @@ namespace WebUI.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        public UserController(IUserService userService, ITokenService tokenService, IValidator<User> validator, IMapper mapper) : base(mapper, validator)
+        private readonly IRoleService _roleService;
+        public UserController(IUserService userService, ITokenService tokenService, IValidator<User> validator, IRoleService roleService, IMapper mapper) : base(mapper, validator)
         {
             _userService = userService;
             _tokenService = tokenService;
+            _roleService = roleService;
         }
 
 
@@ -54,7 +56,8 @@ namespace WebUI.Controllers
         public async Task<ActionResult<ResponseCore<Token>>> LoginUser([FromBody] UserCredential userCredential)
         {
             userCredential.Password = userCredential.Password.stringHash()!;
-            User? user = (await _userService.GetAll()).FirstOrDefault(x => x.Password == userCredential.Password);
+            User? user = (await _userService.GetAll()).FirstOrDefault(x => x.Password == userCredential.Password&&
+                                                                           x.PhoneNumber==userCredential.phoneNumber);
             if (user == null)
             {
                 return BadRequest(new ResponseCore<UserCreateDTO>(false, "User not found"));
@@ -116,6 +119,15 @@ namespace WebUI.Controllers
             {
                 return BadRequest(new ResponseCore<bool>() { IsSuccess = false, Errors = "User not found" });
             }
+
+            foreach (Guid roleId in RolesId)
+            {
+             Role? role= await _roleService.Get(Id);
+                if (role==null)
+                {
+                    return BadRequest(new ResponseCore<bool>() { IsSuccess = false, Errors = "Role not found" });
+                }
+            }
             UserGetDTO userGetDTO = _mapper.Map<UserGetDTO>(user);
             userGetDTO.RoleIds = RolesId;
             User userUpdate = _mapper.Map<User>(userGetDTO);
@@ -158,8 +170,6 @@ namespace WebUI.Controllers
             var result = await _userService.DeleteAsync(user);
             return Ok(new ResponseCore<bool>() { Result = result });
         }
-
-
 
         [HttpGet]
         [Route("[action]")]

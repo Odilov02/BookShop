@@ -55,8 +55,7 @@ public class MapProfile : Profile
 
     void RoleMapping()
     {
-        CreateMap<RoleCreateDTO, Role>().ForMember(dest => dest.permissions!, opt => opt.MapFrom(c => c.permissionIds!.Select(id => new Permission() { Id = id })));
-        CreateMap<Role, RoleCreateDTO>().ForMember(dest => dest.permissionIds, opt => opt.MapFrom(c => c.permissions!.Select(x => x.Id)));
+        CreateMap<RoleCreateDTO, Role>().ReverseMap();
 
         CreateMap<RoleUpdateDTO, Role>().ForMember(dest => dest.permissions!, opt => opt.MapFrom(c => c.permissionIds!.Select(id => new Permission() { Id = id })));
         CreateMap<Role, RoleUpdateDTO>().ForMember(dest => dest.permissionIds, opt => opt.MapFrom(c => c.permissions!.Select(x => x.Id)));

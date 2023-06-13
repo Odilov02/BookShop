@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230607050934_CreateDb")]
+    [Migration("20230608154321_CreateDb")]
     partial class CreateDb
     {
         /// <inheritdoc />
@@ -189,107 +189,102 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c8118d09-1076-4bf7-ac12-385f5fd9bd8c"),
+                            Id = new Guid("f8358238-98d3-4e29-b46e-5b9859345a64"),
                             PermissionName = "CreateAuthor"
                         },
                         new
                         {
-                            Id = new Guid("cec85258-a576-424f-8c55-efcde161d70e"),
+                            Id = new Guid("aa3b577b-5604-4b2d-8236-2ee28f7331ff"),
                             PermissionName = "GetAuthor"
                         },
                         new
                         {
-                            Id = new Guid("42857e02-04db-434d-9f98-3595494d1cdd"),
+                            Id = new Guid("64da12d5-418b-4b1c-a0fd-d8315212dfaf"),
                             PermissionName = "UpdateAuthor"
                         },
                         new
                         {
-                            Id = new Guid("dce5e707-38e1-4e60-85e1-328ec8716195"),
+                            Id = new Guid("8110eb28-91e1-47a1-b14c-da74d181e6fa"),
                             PermissionName = "DeleteAuthor"
                         },
                         new
                         {
-                            Id = new Guid("6d682a95-4a20-4f1c-947b-c89d8c5f05b6"),
+                            Id = new Guid("1c537eac-f5cd-4469-b7a6-80ec3ea5626e"),
                             PermissionName = "GetUser"
                         },
                         new
                         {
-                            Id = new Guid("882af2fd-d21d-4938-8deb-dd1955d77f1f"),
+                            Id = new Guid("1662bd7c-18c6-4097-b8e5-4e47247d8eed"),
                             PermissionName = "UpdateUserForAdmin"
                         },
                         new
                         {
-                            Id = new Guid("599928ff-3a43-462d-8d99-8157c9efb600"),
+                            Id = new Guid("3f794d25-a351-4909-b8ea-993b64463b26"),
                             PermissionName = "GetPermission"
                         },
                         new
                         {
-                            Id = new Guid("9754f9c1-4f1a-483d-875b-fa54704163e6"),
+                            Id = new Guid("4511c081-d5ac-4098-8919-6911b10ca194"),
                             PermissionName = "GetBook"
                         },
                         new
                         {
-                            Id = new Guid("eadb25c4-11ac-403d-8391-3ba6fb3e8519"),
+                            Id = new Guid("44768281-4a34-4b8f-87ed-e3096ab33955"),
                             PermissionName = "UpdateBook"
                         },
                         new
                         {
-                            Id = new Guid("4a0f97bf-d891-498a-84cd-8557bbd52e38"),
+                            Id = new Guid("9b33e79b-f472-4e7b-ad6a-d92421d31a1c"),
                             PermissionName = "DeleteBook"
                         },
                         new
                         {
-                            Id = new Guid("26cd3943-d2a8-4bda-84e7-8ced3a665be6"),
+                            Id = new Guid("c22b82db-53c6-4986-9242-36e45fa6f05f"),
                             PermissionName = "CreateBook"
                         },
                         new
                         {
-                            Id = new Guid("2acf3135-d94b-44ea-92fa-80133bb73e5f"),
+                            Id = new Guid("d0d9774c-1646-484c-a4b2-fb44b849b6db"),
                             PermissionName = "CreateCategory"
                         },
                         new
                         {
-                            Id = new Guid("d671259a-5998-4a0a-9242-ebcf0f288723"),
+                            Id = new Guid("fafc50fb-0e42-4f95-9429-9bffa16d56da"),
                             PermissionName = "GetCategory"
                         },
                         new
                         {
-                            Id = new Guid("0b18d9da-e7ad-423d-9ed5-873582ca6257"),
+                            Id = new Guid("f44e87f1-e1da-431b-87c9-74d25805db09"),
                             PermissionName = "UpdateCategory"
                         },
                         new
                         {
-                            Id = new Guid("3b3eea82-f38e-4f59-befe-ca789424e15e"),
+                            Id = new Guid("281ce138-1ed4-472a-a82c-fe3dc4ad2776"),
                             PermissionName = "DeleteCategory"
                         },
                         new
                         {
-                            Id = new Guid("a8bfeaf5-2ae1-47fe-bb3d-f68e5781f59a"),
-                            PermissionName = "UpdateCommentary"
-                        },
-                        new
-                        {
-                            Id = new Guid("d6bd1182-8d0a-4884-9d0e-277e009f1b8d"),
+                            Id = new Guid("6de2aca7-2a80-43fe-88d7-0a043cf6bbc0"),
                             PermissionName = "DeleteCommentary"
                         },
                         new
                         {
-                            Id = new Guid("2c8b9e9f-6d42-4a4e-a1e0-524da98e480d"),
+                            Id = new Guid("4e467bee-3702-4467-8de6-e685a1b05c13"),
                             PermissionName = "CreateRole"
                         },
                         new
                         {
-                            Id = new Guid("4f23ada4-0bf6-4873-842d-6d64b95cd083"),
+                            Id = new Guid("4bbd830b-88e0-4bf0-8549-0a1032cd0130"),
                             PermissionName = "GetRole"
                         },
                         new
                         {
-                            Id = new Guid("d040c078-32aa-42a7-9d21-2b1947630226"),
+                            Id = new Guid("9ad08e9e-d6ed-486c-9864-13c6fc87323e"),
                             PermissionName = "UpdateRole"
                         },
                         new
                         {
-                            Id = new Guid("715c6cc6-ac75-45e7-9df7-22e7957c58fb"),
+                            Id = new Guid("6b097798-0726-474c-8c76-26706b51e383"),
                             PermissionName = "DeleteRole"
                         });
                 });

@@ -48,30 +48,6 @@ public class CommentaryController : ApiBaseController<Commentary>
 
 
 
-    [HttpPut]
-    [Route("[action]")]
-    [Authorize(Roles = "UpdateCommenatry")]
-    [ModelValidation]
-    public async Task<ActionResult<ResponseCore<List<CommentaryUpdateDTO>>>> UpdateCommentary([FromBody] CommentaryUpdateDTO commentaryrDto)
-    {
-        Commentary commentary = _mapper.Map<Commentary>(commentaryrDto);
-        var validationResult = _validator.Validate(commentary);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(new ResponseCore<CommentaryUpdateDTO>(false, validationResult.Errors));
-        }
-        await _commentaryService.UpdateAsync(commentary);
-        var result = _mapper.Map<CommentaryUpdateDTO>(commentary);
-        ResponseCore<CommentaryUpdateDTO> ResponseCoreCore = new ResponseCore<CommentaryUpdateDTO>()
-        {
-            IsSuccess = true,
-            Result = result
-        };
-        return Ok(ResponseCoreCore);
-    }
-
-
-
     [HttpDelete]
     [Route("[action]")]
     [Authorize(Roles = "DeleteCommentary")]

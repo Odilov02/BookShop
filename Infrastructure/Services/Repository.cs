@@ -47,9 +47,10 @@ namespace Infrastructure.Services
             T? result = await _db.Set<T>().FindAsync(Id)!;
             return result!;
         }
-        public async Task<bool> UpdateAsync(T entity)
+        public virtual async Task<bool> UpdateAsync(T entity)
         {
             _db.Set<T>().Update(entity);
+           
             await _db.SaveChangesAsync();
             return true;
         }

@@ -13,8 +13,4 @@ public class BookCreateDTO
     public decimal Price { get; set; }
     public string ImageUrl { get; set; } = "";
     public int Count { get; set; }
-
-    public Guid AuthorId { get; set; }
-
-    public Guid CategoryId { get; set; }
 }

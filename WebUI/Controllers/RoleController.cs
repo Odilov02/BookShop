@@ -1,7 +1,6 @@
 ﻿
 using Application.DTOs.Authors;
 using Application.DTOs.Roles;
-using Application.DTOs.Users;
 using Application.Interfaces.ServiceInterfaces;
 using Application.Models;
 using Application.ResponseCoreModel;
@@ -21,11 +20,14 @@ namespace WebApi.Controllers;
 public class RoleController : ApiBaseController<Role>
 {
     private readonly IRoleService _roleService;
+    private readonly IPermissionService _permissionService;
 
 
-    public RoleController(IRoleService roleService, IMapper mapper, IValidator<Role> validator) : base(mapper, validator)
+    public RoleController(IRoleService roleService, IMapper mapper, IPermissionService permissionService, IValidator<Role> validator) : base(mapper, validator)
     {
+
         _roleService = roleService;
+        _permissionService = permissionService;
     }
 
 
@@ -56,19 +58,43 @@ public class RoleController : ApiBaseController<Role>
 
     [HttpPut]
     [Route("[action]")]
-    [Authorize(Roles = "UpdateRole")]
+    //  [Authorize(Roles = "UpdateRole")]
+    [AllowAnonymous]
     [ModelValidation]
-    public async Task<ActionResult<ResponseCore<List<RoleUpdateDTO>>>> UpdateRole([FromBody] RoleUpdateDTO roleDto)
+    public async Task<ActionResult<ResponseCore<bool>>> UpdateRole([FromBody] RoleUpdateDTO roleDto)
     {
+        Role? roleUpdate = await _roleService.Get(roleDto.Id);
+        if (roleUpdate == null)
+        {
+            return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Role not found" });
+        }
+        List<Guid> PermissionIds = new List<Guid>();
+        foreach (Guid Id in roleDto!.permissionIds!)
+        {
+            Permission? permissionUpdate = await _permissionService.Get(Id);
+            if (permissionUpdate == null)
+            {
+                return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Permission not found" });
+            }
+            var perm = roleUpdate.permissions.FirstOrDefault(x => x.Id == Id);
+            if (perm != null)
+            {
+                PermissionIds.Add(Id);
+            }
+        }
+        foreach (var item in PermissionIds)
+        {
+            roleDto.permissionIds.Remove(item);
+        }
         Role role = _mapper.Map<Role>(roleDto);
         var validationResult = _validator.Validate(role);
         if (!validationResult.IsValid)
         {
             return BadRequest(new ResponseCore<AuthorUpdateDTO>(false, validationResult.Errors));
         }
-        await _roleService.UpdateAsync(role);
-        var result = _mapper.Map<RoleUpdateDTO>(role);
-        ResponseCore<RoleUpdateDTO> ResponseCoreCore = new ResponseCore<RoleUpdateDTO>()
+        bool result = await _roleService.UpdateAsync(role);
+
+        ResponseCore<bool> ResponseCoreCore = new ResponseCore<bool>()
         {
             IsSuccess = true,
             Result = result
@@ -97,6 +123,7 @@ public class RoleController : ApiBaseController<Role>
 
     [HttpGet]
     [Route("[action]")]
+    [AllowAnonymous]
     [Authorize(Roles = "GetRole")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<RoleGetDTO>>> GetRole(Guid Id)
@@ -114,7 +141,8 @@ public class RoleController : ApiBaseController<Role>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetRole")]
+    // [Authorize(Roles = "GetRole")]
+    [AllowAnonymous]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<RoleGetDTO>>>> GetAllRole(int pageSize = 10, int pageIndex = 1)
     {

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Domain.Entities;
+using Domain.Entities.IdentityEntities;
+using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,11 @@ using System.Threading.Tasks;
 
 namespace Application.Validations
 {
-    internal class PermissionValidation
+    public class PermissionValidation: AbstractValidator<Permission>
     {
+        public PermissionValidation()
+        {
+            
+        }
     }
 }
