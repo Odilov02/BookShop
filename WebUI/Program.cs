@@ -11,37 +11,36 @@ namespace WebUI
         {
             try
             {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            var builder = WebApplication.CreateBuilder(args);
+                var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddInfrastructureServices(builder.Configuration);
-            builder.Services.AddApplicationServices(builder.Configuration);
-            builder.Services.AddDomainServices(builder.Configuration);
-            builder.Services.AddUIServices(builder.Configuration);
+                builder.Services.AddInfrastructureServices(builder.Configuration);
+                builder.Services.AddApplicationServices(builder.Configuration);
+                builder.Services.AddDomainServices(builder.Configuration);
+                builder.Services.AddUIServices(builder.Configuration);
 
-            WebApplication app = builder.Build();
-            app.UseExeptionHandling();
+                WebApplication app = builder.Build();
+                app.UseExeptionHandling();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+                app.UseAuthentication();
+                app.UseAuthorization();
 
-            app.MapControllers();
+                app.MapControllers();
 
-            app.Run();
+                app.Run();
 
             }
             catch (Exception e)
             {
 
-                
+
             }
         }
     }

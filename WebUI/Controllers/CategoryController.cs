@@ -94,7 +94,6 @@ public class CategoryController : ApiBaseController<Category>
 
     [HttpGet]
     [Route("[action]")]
-    [Authorize(Roles = "GetCategory")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<CategoryGetDTO>>> GetCategory(Guid Id)
     {
@@ -111,9 +110,8 @@ public class CategoryController : ApiBaseController<Category>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetCategory")]
     [ModelValidation]
-    public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> GetAllCAtegory(int pageSize = 10, int pageIndex = 1)
+    public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> GetAllCategory(int pageSize = 10, int pageIndex = 1)
     {
         List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAllAsync());
         PaginatedList<CategoryGetDTO> paginatedList = PaginatedList<CategoryGetDTO>.CreateAsync(commentaryGetDtos, pageSize, pageIndex);
@@ -123,7 +121,6 @@ public class CategoryController : ApiBaseController<Category>
 
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "GetCategory")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> SearchingCategory(string searchString, int pageSize = 10, int pageIndex = 1)
     {

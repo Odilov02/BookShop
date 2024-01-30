@@ -1,8 +1,6 @@
-﻿using Application.Interfaces.ServiceInterfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Security.Cryptography;
 using System.Text;
 using WebUI.Services;
 
@@ -44,7 +42,7 @@ namespace WebUI
                 });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-                options=>
+                options =>
                 {
                     options.SaveToken = true;
                     options.TokenValidationParameters = new()

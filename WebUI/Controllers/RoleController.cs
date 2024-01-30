@@ -1,16 +1,6 @@
-﻿
-using Application.DTOs.Authors;
-using Application.DTOs.Roles;
-using Application.Interfaces.ServiceInterfaces;
-using Application.Models;
-using Application.ResponseCoreModel;
-using AutoMapper;
+﻿using Application.DTOs.Roles;
 using Domain.Entities.IdentityEntities;
-using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using WebUI.Controllers;
-using WebUI.Filters;
 
 namespace WebApi.Controllers;
 
@@ -33,8 +23,7 @@ public class RoleController : ApiBaseController<Role>
 
 
     [HttpPost("[action]")]
-    // [Authorize(Roles = "CreateRole")]
-    [AllowAnonymous]
+    [Authorize(Roles = "CreateRole")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<List<RoleCreateDTO>>>> CreateRole([FromBody] RoleCreateDTO roleDto)
     {
@@ -58,8 +47,7 @@ public class RoleController : ApiBaseController<Role>
 
     [HttpPut]
     [Route("[action]")]
-      [Authorize(Roles = "UpdateRole")]
-    [AllowAnonymous]
+    [Authorize(Roles = "UpdateRole")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> UpdateRole([FromBody] RoleUpdateDTO roleDto)
     {
@@ -123,7 +111,6 @@ public class RoleController : ApiBaseController<Role>
 
     [HttpGet]
     [Route("[action]")]
-    [AllowAnonymous]
     [Authorize(Roles = "GetRole")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<RoleGetDTO>>> GetRole(Guid Id)
@@ -141,7 +128,7 @@ public class RoleController : ApiBaseController<Role>
 
 
     [HttpGet("[action]")]
-    // [Authorize(Roles = "GetRole")]
+    [Authorize(Roles = "GetRole")]
     [AllowAnonymous]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<RoleGetDTO>>>> GetAllRole(int pageSize = 10, int pageIndex = 1)

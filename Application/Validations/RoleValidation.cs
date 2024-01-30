@@ -7,7 +7,7 @@ namespace Application.Validations
     {
         public RoleValidation()
         {
-            RuleFor(x => x.RoleName).NotEmpty().NotNull().WithMessage("RoleName is not valid");
+            RuleFor(x => x.Name).NotEmpty().NotNull().WithMessage("RoleName is not valid");
         }
     }
 }

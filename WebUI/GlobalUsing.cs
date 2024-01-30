@@ -1,0 +1,11 @@
+﻿global using Application.DTOs.Authors;
+global using Application.DTOs.Users;
+global using Application.Interfaces.ServiceInterfaces;
+global using Application.Models;
+global using Application.ResponseCoreModel;
+global using AutoMapper;
+global using Domain.Entities;
+global using FluentValidation;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using WebUI.Filters;

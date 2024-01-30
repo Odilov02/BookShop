@@ -1,14 +1,4 @@
 ﻿using Application.DTOs.Books;
-using Application.DTOs.Users;
-using Application.Interfaces.ServiceInterfaces;
-using Application.Models;
-using Application.ResponseCoreModel;
-using AutoMapper;
-using Domain.Entities;
-using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Filters;
 namespace WebUI.Controllers;
 
 [Route("api/[controller]")]
@@ -24,7 +14,7 @@ public class BookController : ApiBaseController<Book>
     {
         _bookService = bookService;
         _authorService = authorService;
-        _categoryService= categoryService;
+        _categoryService = categoryService;
     }
 
 
@@ -63,13 +53,13 @@ public class BookController : ApiBaseController<Book>
         {
             return BadRequest(new ResponseCore<BookUpdateDTO>(false, validationResult.Errors));
         }
-        Author? author =await _authorService.GetAsync(bookDTO.AuthorId);
-        if (author==null)
+        Author? author = await _authorService.GetAsync(bookDTO.AuthorId);
+        if (author == null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Author not found" });
         }
-        Category? category =await _categoryService.GetAsync(bookDTO.CategoryId);
-        if (category==null)
+        Category? category = await _categoryService.GetAsync(bookDTO.CategoryId);
+        if (category == null)
         {
 
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Category not found" });
@@ -105,7 +95,6 @@ public class BookController : ApiBaseController<Book>
 
     [HttpGet]
     [Route("[action]")]
-    [Authorize(Roles = "GetBook")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<BookGetDTO>>> GetBook(Guid Id)
     {

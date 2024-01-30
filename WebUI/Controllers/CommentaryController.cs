@@ -1,14 +1,5 @@
 ﻿using Application.DTOs.Commentaries;
-using Application.Interfaces.ServiceInterfaces;
-using Application.Models;
-using Application.ResponseCoreModel;
-using AutoMapper;
-using Domain.Entities;
-using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using WebUI.Controllers;
-using WebUI.Filters;
 
 namespace WebApi.Controllers;
 
@@ -50,7 +41,6 @@ public class CommentaryController : ApiBaseController<Commentary>
 
     [HttpDelete]
     [Route("[action]")]
-    [Authorize(Roles = "DeleteCommentary")]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> DeleteCommentary(Guid Id)
     {
@@ -62,7 +52,6 @@ public class CommentaryController : ApiBaseController<Commentary>
         var result = await _commentaryService.DeleteAsync(commentary);
         return Ok(new ResponseCore<bool>() { Result = result });
     }
-
 
 
     [HttpGet]
