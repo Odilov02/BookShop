@@ -34,7 +34,7 @@ public class PermissionController : ApiBaseController<Permission>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PermissionGetDTO>>> GetPermission(Guid Id)
     {
-        Permission? permissin = await _permissionService.Get(Id);
+        Permission? permissin = await _permissionService.GetAsync(Id);
         if (permissin == null)
         {
             return BadRequest(new ResponseCore<PermissionGetDTO>() { IsSuccess = false, Errors = "Permission not found" });
@@ -51,7 +51,7 @@ public class PermissionController : ApiBaseController<Permission>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<PermissionGetDTO>>>> GetAllPermission(int pageSize = 10, int pageIndex = 1)
     {
-        List<PermissionGetDTO> permissionGetDtos = _mapper.Map<List<PermissionGetDTO>>(await _permissionService.GetAll());
+        List<PermissionGetDTO> permissionGetDtos = _mapper.Map<List<PermissionGetDTO>>(await _permissionService.GetAllAsync());
         PaginatedList<PermissionGetDTO> paginatedList = PaginatedList<PermissionGetDTO>.CreateAsync(permissionGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<PermissionGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }
@@ -62,7 +62,7 @@ public class PermissionController : ApiBaseController<Permission>
     [Authorize(Roles = "GetPermission")]
     public async Task<ActionResult<ResponseCore<PaginatedList<PermissionGetDTO>>>> SearchingPermission(string SearchString, int pageSize = 10, int pageIndex = 1)
     {
-        List<PermissionGetDTO> permissionGetDtos = _mapper.Map<List<PermissionGetDTO>>(await _permissionService.GetAll())
+        List<PermissionGetDTO> permissionGetDtos = _mapper.Map<List<PermissionGetDTO>>(await _permissionService.GetAllAsync())
                                                           .Where(x => x.PermissionName.Contains(SearchString)).ToList();
         PaginatedList<PermissionGetDTO> paginatedList = PaginatedList<PermissionGetDTO>.CreateAsync(permissionGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<PermissionGetDTO>>() { IsSuccess = true, Result = paginatedList });

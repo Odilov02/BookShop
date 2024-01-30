@@ -19,7 +19,8 @@ public class TokenService : ITokenService
         _configuration = configuration;
         _tokenService = tokenService;
     }
-    public async Task<string> CreateAccesToken(User user)
+
+    public string CreateAccesToken(User user)
     {
 
         List<Claim> claims = new List<Claim>();
@@ -56,7 +57,7 @@ public class TokenService : ITokenService
         string? tokenString = DateTime.UtcNow.ToString() + user.Password;
         tokenString = tokenString.stringHash();
 
-        RefreshToken? token = await _tokenService.Get(user.Id);
+        RefreshToken? token = await _tokenService.GetAsync(user.Id);
         if (token == null)
         {
             RefreshToken refreshToken = new()
@@ -75,13 +76,13 @@ public class TokenService : ITokenService
         }
         return tokenString!;
     }
-    public async Task<bool> IsActive(string token)
+    public async Task<bool> IsActiveAsync(string token)
     {
-        ICollection<RefreshToken> refreshTokens = await _tokenService.GetAll();
-        var refreshToken = refreshTokens.FirstOrDefault(x => x.Refresh == token);
+        var refreshToken = (await _tokenService.GetAllAsync()).FirstOrDefault(x => x.Refresh == token);
         if (refreshToken == null) return false;
         if (DateTime.UtcNow < refreshToken!.ActiveDate)
             return true;
+        else
         return false;
 
     }

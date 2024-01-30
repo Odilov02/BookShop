@@ -56,7 +56,7 @@ namespace WebUI.Controllers
         public async Task<ActionResult<ResponseCore<Token>>> LoginUser([FromBody] UserCredential userCredential)
         {
             userCredential.Password = userCredential.Password.stringHash()!;
-            User? user = (await _userService.GetAll()).FirstOrDefault(x => x.Password == userCredential.Password&&
+            User? user = (await _userService.GetAllAsync()).FirstOrDefault(x => x.Password == userCredential.Password&&
                                                                            x.PhoneNumber==userCredential.phoneNumber);
             if (user == null)
             {
@@ -86,7 +86,7 @@ namespace WebUI.Controllers
             user.Password = user!.Password!.stringHash()!;
 
             password = password!.stringHash()!;
-            User? userUpdate = (await _userService.GetAll()).Where(x => x.Password == password &&
+            User? userUpdate = (await _userService.GetAllAsync()).Where(x => x.Password == password &&
                                                                   x.PhoneNumber == phoneNumber)
                                                                             .FirstOrDefault();
             if (userUpdate == null)
@@ -114,7 +114,7 @@ namespace WebUI.Controllers
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<List<bool>>>> UpdateUserForAdmin(Guid Id, Guid[] RolesId)
         {
-            User? user = await _userService.Get(Id);
+            User? user = await _userService.GetAsync(Id);
             if (user == null)
             {
                 return BadRequest(new ResponseCore<bool>() { IsSuccess = false, Errors = "User not found" });
@@ -122,7 +122,7 @@ namespace WebUI.Controllers
 
             foreach (Guid roleId in RolesId)
             {
-             Role? role= await _roleService.Get(Id);
+             Role? role= await _roleService.GetAsync(Id);
                 if (role==null)
                 {
                     return BadRequest(new ResponseCore<bool>() { IsSuccess = false, Errors = "Role not found" });
@@ -142,7 +142,7 @@ namespace WebUI.Controllers
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<UserGetDTO>>> GetUser(Guid Id)
         {
-            User? user = await _userService.Get(Id);
+            User? user = await _userService.GetAsync(Id);
             if (user == null)
             {
                 return BadRequest(new ResponseCore<UserGetDTO>() { IsSuccess = false, Errors = "User not found" });
@@ -160,7 +160,7 @@ namespace WebUI.Controllers
         public async Task<ActionResult<ResponseCore<bool>>> DeleteUser([FromBody] UserCredential userCredential)
         {
             userCredential.Password = userCredential!.Password!.stringHash()!;
-            User? user = (await _userService.GetAll()).Where(x => x.Password == userCredential.Password &&
+            User? user = (await _userService.GetAllAsync()).Where(x => x.Password == userCredential.Password &&
                                                                   x.PhoneNumber == userCredential.phoneNumber)
                                                                             .FirstOrDefault();
             if (user == null)
@@ -177,7 +177,7 @@ namespace WebUI.Controllers
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<PaginatedList<UserGetDTO>>>> GetAllUser(int pageSize = 10, int pageIndex = 1)
         {
-            List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>(await _userService.GetAll());
+            List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>(await _userService.GetAllAsync());
             PaginatedList<UserGetDTO> paginatedList = PaginatedList<UserGetDTO>.CreateAsync(userGetDtos, pageSize, pageIndex);
             return Ok(new ResponseCore<PaginatedList<UserGetDTO>>() { IsSuccess = true, Result = paginatedList });
         }
@@ -189,7 +189,7 @@ namespace WebUI.Controllers
         public async Task<ActionResult<ResponseCore<PaginatedList<UserGetDTO>>>> Searching(string SearchString, int pageSize = 10, int pageIndex = 1)
         {
 
-            List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>((await _userService.GetAll())
+            List<UserGetDTO> userGetDtos = _mapper.Map<List<UserGetDTO>>((await _userService.GetAllAsync())
                                                   .Where(x => x.FullName.Contains(SearchString)));
             PaginatedList<UserGetDTO> paginatedList = PaginatedList<UserGetDTO>.CreateAsync(userGetDtos, pageSize, pageIndex);
             return Ok(new ResponseCore<PaginatedList<UserGetDTO>>() { IsSuccess = true, Result = paginatedList });

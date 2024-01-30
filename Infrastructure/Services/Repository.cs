@@ -35,14 +35,14 @@ namespace Infrastructure.Services
             return true;
         }
 
-        public async Task<List<T>>? GetAll()
+        public async Task<List<T>>? GetAllAsync()
         {
             List<T>? entities = _db.Set<T>().ToList();
             await _db.SaveChangesAsync();
             return entities;
         }
 
-        public async Task<T> Get(Guid Id)
+        public async Task<T> GetAsync(Guid Id)
         {
             T? result = await _db.Set<T>().FindAsync(Id)!;
             return result!;

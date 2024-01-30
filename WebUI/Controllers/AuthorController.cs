@@ -76,7 +76,7 @@ namespace WebUI.Controllers
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<bool>>> DeleteAuthor(Guid Id)
         {
-            Author? author = await _authorService.Get(Id);
+            Author? author = await _authorService.GetAsync(Id);
             if (author == null)
             {
                 return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Author not found" });
@@ -93,7 +93,7 @@ namespace WebUI.Controllers
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<AuthorGetDTO>>> GetAuthor(Guid Id)
         {
-            Author? author = await _authorService.Get(Id);
+            Author? author = await _authorService.GetAsync(Id);
             if (author == null)
             {
                 return BadRequest(new ResponseCore<AuthorGetDTO>() { IsSuccess = false, Errors = "Author not found" });
@@ -109,7 +109,7 @@ namespace WebUI.Controllers
         [ModelValidation]
         public async Task<ActionResult<ResponseCore<PaginatedList<AuthorGetDTO>>>> GetAllAuthor(int pageSize = 10, int pageIndex = 1)
         {
-            List<AuthorGetDTO> authorGetDtos = _mapper.Map<List<AuthorGetDTO>>(await _authorService.GetAll());
+            List<AuthorGetDTO> authorGetDtos = _mapper.Map<List<AuthorGetDTO>>(await _authorService.GetAllAsync());
             PaginatedList<AuthorGetDTO> paginatedList = PaginatedList<AuthorGetDTO>.CreateAsync(authorGetDtos, pageSize, pageIndex);
             return Ok(new ResponseCore<PaginatedList<AuthorGetDTO>>() { IsSuccess = true, Result = paginatedList });
         }
@@ -120,7 +120,7 @@ namespace WebUI.Controllers
         [Authorize(Roles = "GetAuthor")]
         public async Task<ActionResult<ResponseCore<PaginatedList<AuthorGetDTO>>>> SearchingAuthor(int pageSize = 10, int pageIndex = 1)
         {
-            List<AuthorGetDTO> authorGetDtos = _mapper.Map<List<AuthorGetDTO>>(await _authorService.GetAll());
+            List<AuthorGetDTO> authorGetDtos = _mapper.Map<List<AuthorGetDTO>>(await _authorService.GetAllAsync());
             PaginatedList<AuthorGetDTO> paginatedList = PaginatedList<AuthorGetDTO>.CreateAsync(authorGetDtos, pageSize, pageIndex);
             return Ok(new ResponseCore<PaginatedList<AuthorGetDTO>>() { IsSuccess = true, Result = paginatedList });
         }

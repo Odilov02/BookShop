@@ -63,12 +63,12 @@ public class BookController : ApiBaseController<Book>
         {
             return BadRequest(new ResponseCore<BookUpdateDTO>(false, validationResult.Errors));
         }
-        Author? author =await _authorService.Get(bookDTO.AuthorId);
+        Author? author =await _authorService.GetAsync(bookDTO.AuthorId);
         if (author==null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Author not found" });
         }
-        Category? category =await _categoryService.Get(bookDTO.CategoryId);
+        Category? category =await _categoryService.GetAsync(bookDTO.CategoryId);
         if (category==null)
         {
 
@@ -92,7 +92,7 @@ public class BookController : ApiBaseController<Book>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> DeleteBook(Guid Id)
     {
-        Book? book = await _bookService.Get(Id);
+        Book? book = await _bookService.GetAsync(Id);
         if (book == null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Book not found" });
@@ -109,7 +109,7 @@ public class BookController : ApiBaseController<Book>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<BookGetDTO>>> GetBook(Guid Id)
     {
-        Book? book = await _bookService.Get(Id);
+        Book? book = await _bookService.GetAsync(Id);
         if (book == null)
         {
             return BadRequest(new ResponseCore<BookGetDTO>() { IsSuccess = false, Errors = "User not found" });
@@ -126,7 +126,7 @@ public class BookController : ApiBaseController<Book>
     [AllowAnonymous]
     public async Task<ActionResult<ResponseCore<PaginatedList<BookGetDTO>>>> GetAllBook(int pageSize = 10, int pageIndex = 1)
     {
-        List<BookGetDTO> bookGetDtos = _mapper.Map<List<BookGetDTO>>(await _bookService.GetAll());
+        List<BookGetDTO> bookGetDtos = _mapper.Map<List<BookGetDTO>>(await _bookService.GetAllAsync());
         PaginatedList<BookGetDTO> paginatedList = PaginatedList<BookGetDTO>.CreateAsync(bookGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<BookGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }
@@ -137,7 +137,7 @@ public class BookController : ApiBaseController<Book>
     [AllowAnonymous]
     public async Task<ActionResult<ResponseCore<PaginatedList<BookGetDTO>>>> SearchingBook(string searchingString, int pageSize = 10, int pageIndex = 1)
     {
-        List<BookGetDTO> bookGetDtos = _mapper.Map<List<BookGetDTO>>(await _bookService.GetAll())
+        List<BookGetDTO> bookGetDtos = _mapper.Map<List<BookGetDTO>>(await _bookService.GetAllAsync())
                                               .Where(x => x.Language.Contains(searchingString) ||
                                                           x.Count.ToString().Contains(searchingString) ||
                                                           x.Description.Contains(searchingString) ||

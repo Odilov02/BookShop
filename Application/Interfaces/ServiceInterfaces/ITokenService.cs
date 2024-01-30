@@ -5,9 +5,9 @@ namespace Application.Interfaces.ServiceInterfaces;
 
 public interface ITokenService
 {
-    Task<string> CreateAccesToken(User user);
+    string CreateAccesToken(User user);
     Task<string> CreateRefreshAccesToken(User user);
-    Task<bool> IsActive(string token);
+    Task<bool> IsActiveAsync(string token);
     ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
 }
 

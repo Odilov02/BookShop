@@ -1,17 +1,8 @@
-﻿using Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Domain.Entities.IdentityEntities;
 
-namespace Domain.Entities.IdentityEntities;
-
-public class Role
+public class Role : BaseAuditableEntity
 {
-    public Guid Id { get; set; }
-    public string? RoleName { get; set; } = "";
-    public ICollection<Permission> permissions {get; set; }
-    public ICollection<User>? Users {get; set; }
+    public string Name { get; set; }
+    public virtual ICollection<Permission> permissions { get; set; }
+    public virtual ICollection<User>? Users { get; set; }
 }

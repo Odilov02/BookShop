@@ -58,12 +58,12 @@ public class RoleController : ApiBaseController<Role>
 
     [HttpPut]
     [Route("[action]")]
-    //  [Authorize(Roles = "UpdateRole")]
+      [Authorize(Roles = "UpdateRole")]
     [AllowAnonymous]
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> UpdateRole([FromBody] RoleUpdateDTO roleDto)
     {
-        Role? roleUpdate = await _roleService.Get(roleDto.Id);
+        Role? roleUpdate = await _roleService.GetAsync(roleDto.Id);
         if (roleUpdate == null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Role not found" });
@@ -71,7 +71,7 @@ public class RoleController : ApiBaseController<Role>
         List<Guid> PermissionIds = new List<Guid>();
         foreach (Guid Id in roleDto!.permissionIds!)
         {
-            Permission? permissionUpdate = await _permissionService.Get(Id);
+            Permission? permissionUpdate = await _permissionService.GetAsync(Id);
             if (permissionUpdate == null)
             {
                 return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Permission not found" });
@@ -110,7 +110,7 @@ public class RoleController : ApiBaseController<Role>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> DeleteRole(Guid Id)
     {
-        Role? role = await _roleService.Get(Id);
+        Role? role = await _roleService.GetAsync(Id);
         if (role == null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Role not found" });
@@ -128,7 +128,7 @@ public class RoleController : ApiBaseController<Role>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<RoleGetDTO>>> GetRole(Guid Id)
     {
-        Role? role = await _roleService.Get(Id);
+        Role? role = await _roleService.GetAsync(Id);
         if (role == null)
         {
             return BadRequest(new ResponseCore<RoleGetDTO>() { IsSuccess = false, Errors = "Role not found" });
@@ -146,7 +146,7 @@ public class RoleController : ApiBaseController<Role>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<RoleGetDTO>>>> GetAllRole(int pageSize = 10, int pageIndex = 1)
     {
-        List<RoleGetDTO> roleGetDtos = _mapper.Map<List<RoleGetDTO>>(await _roleService.GetAll());
+        List<RoleGetDTO> roleGetDtos = _mapper.Map<List<RoleGetDTO>>(await _roleService.GetAllAsync());
         PaginatedList<RoleGetDTO> paginatedList = PaginatedList<RoleGetDTO>.CreateAsync(roleGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<RoleGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }
@@ -157,7 +157,7 @@ public class RoleController : ApiBaseController<Role>
     public async Task<ActionResult<ResponseCore<PaginatedList<RoleGetDTO>>>> SearchingRole(string SearchString, int pageSize = 10, int pageIndex = 1)
     {
 
-        List<RoleGetDTO> roleGetDtos = _mapper.Map<List<RoleGetDTO>>((await _roleService.GetAll())
+        List<RoleGetDTO> roleGetDtos = _mapper.Map<List<RoleGetDTO>>((await _roleService.GetAllAsync())
                                               .Where(x => x.RoleName!.Contains(SearchString)));
         PaginatedList<RoleGetDTO> paginatedList = PaginatedList<RoleGetDTO>.CreateAsync(roleGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<RoleGetDTO>>() { IsSuccess = true, Result = paginatedList });

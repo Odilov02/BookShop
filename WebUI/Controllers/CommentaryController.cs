@@ -54,7 +54,7 @@ public class CommentaryController : ApiBaseController<Commentary>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> DeleteCommentary(Guid Id)
     {
-        Commentary? commentary = await _commentaryService.Get(Id);
+        Commentary? commentary = await _commentaryService.GetAsync(Id);
         if (commentary == null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Commentary not found" });
@@ -70,7 +70,7 @@ public class CommentaryController : ApiBaseController<Commentary>
     [AllowAnonymous]
     public async Task<ActionResult<ResponseCore<CommentaryGetDTO>>> GetCommentary(Guid Id)
     {
-        Commentary? commentary = await _commentaryService.Get(Id);
+        Commentary? commentary = await _commentaryService.GetAsync(Id);
         if (commentary == null)
         {
             return BadRequest(new ResponseCore<CommentaryGetDTO>() { IsSuccess = false, Errors = "Commentary not found" });
@@ -86,7 +86,7 @@ public class CommentaryController : ApiBaseController<Commentary>
     [AllowAnonymous]
     public async Task<ActionResult<ResponseCore<PaginatedList<CommentaryGetDTO>>>> GetAllCommentary(int pageSize = 10, int pageIndex = 1)
     {
-        List<CommentaryGetDTO> commentaryGetDtos = _mapper.Map<List<CommentaryGetDTO>>(await _commentaryService.GetAll());
+        List<CommentaryGetDTO> commentaryGetDtos = _mapper.Map<List<CommentaryGetDTO>>(await _commentaryService.GetAllAsync());
         PaginatedList<CommentaryGetDTO> paginatedList = PaginatedList<CommentaryGetDTO>.CreateAsync(commentaryGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<CommentaryGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }

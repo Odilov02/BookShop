@@ -81,7 +81,7 @@ public class CategoryController : ApiBaseController<Category>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<bool>>> DeleteCategory(Guid Id)
     {
-        Category? category = await _categoryService.Get(Id);
+        Category? category = await _categoryService.GetAsync(Id);
         if (category == null)
         {
             return BadRequest(new ResponseCore<bool>() { Result = false, Errors = "Category not found" });
@@ -98,7 +98,7 @@ public class CategoryController : ApiBaseController<Category>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<CategoryGetDTO>>> GetCategory(Guid Id)
     {
-        Category? category = await _categoryService.Get(Id);
+        Category? category = await _categoryService.GetAsync(Id);
         if (category == null)
         {
             return BadRequest(new ResponseCore<CategoryGetDTO>() { IsSuccess = false, Errors = "Category not found" });
@@ -115,7 +115,7 @@ public class CategoryController : ApiBaseController<Category>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> GetAllCAtegory(int pageSize = 10, int pageIndex = 1)
     {
-        List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAll());
+        List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAllAsync());
         PaginatedList<CategoryGetDTO> paginatedList = PaginatedList<CategoryGetDTO>.CreateAsync(commentaryGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<CategoryGetDTO>>() { IsSuccess = true, Result = paginatedList });
     }
@@ -127,7 +127,7 @@ public class CategoryController : ApiBaseController<Category>
     [ModelValidation]
     public async Task<ActionResult<ResponseCore<PaginatedList<CategoryGetDTO>>>> SearchingCategory(string searchString, int pageSize = 10, int pageIndex = 1)
     {
-        List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAll())
+        List<CategoryGetDTO> commentaryGetDtos = _mapper.Map<List<CategoryGetDTO>>(await _categoryService.GetAllAsync())
                                                          .Where(x => x.Name.Contains(searchString)).ToList();
         PaginatedList<CategoryGetDTO> paginatedList = PaginatedList<CategoryGetDTO>.CreateAsync(commentaryGetDtos, pageSize, pageIndex);
         return Ok(new ResponseCore<PaginatedList<CategoryGetDTO>>() { IsSuccess = true, Result = paginatedList });
