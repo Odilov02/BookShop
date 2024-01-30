@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.DTOs.Authors;
+﻿namespace Application.DTOs.Authors;
 
 public class AuthorCreateDTO
 {
-    public string FullName { get; set; } = "";
+    public string FullName { get; set; }
 
-    public string Description { get; set; } = "";
+    public string Description { get; set; }
 }

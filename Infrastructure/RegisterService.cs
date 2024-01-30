@@ -6,7 +6,6 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Infrastructure
 {
@@ -22,14 +21,14 @@ namespace Infrastructure
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<ICommentaryService, CommentarySerivce>();
-            services.AddScoped<ITokenService,TokenService>();
-            services.AddScoped<IRefreshTokenService,RefreshTokenService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IApplicatonDbcontext, AppDbContext>();
             services.AddScoped<IUserService, UserSevice>();
-           services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IRoleService, RoleService>();
 
